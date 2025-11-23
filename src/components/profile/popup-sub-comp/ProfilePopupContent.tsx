@@ -1,7 +1,24 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import DataLoader from "./hooks/DataLoader"
 
 export default function ProfilePopupContent(){
+// edit mode state
 const [isEditMode, setIsEditMode] = useState(false)
+
+// variables for deatails
+const [username, setUsername] = useState('')
+const [email, setEmail] = useState('')
+
+// getting the data from the loading function
+const handleLoadingData = async () => {
+    const res : any = await DataLoader()
+    setUsername(res[0][0]?.username)
+    setEmail(res[1])
+}
+
+useEffect(() => {
+    handleLoadingData();
+}, [])
 
 return(
 <div className="flex flex-col gap-8 p-8 bg-zinc-900/50 rounded-tr-lg rounded-br-lg rounded-bl-lg">
@@ -18,7 +35,9 @@ return(
         <div className="flex flex-col gap-4 flex-1">
             <div className="flex flex-col gap-2">
                 <label className="text-white text-sm font-medium">Username</label>
-                <input 
+                <input
+                    value = {username}
+                    onChange = {(e) => setUsername(e.target.value)} 
                     readOnly
                     type="text" 
                     placeholder="Enter username"
@@ -29,6 +48,8 @@ return(
             <div className="flex flex-col gap-2">
                 <label className="text-white text-sm font-medium">Email</label>
                 <input 
+                    value = {email}
+                    onChange = {(e) => setEmail(e.target.value)}
                     readOnly
                     type="email" 
                     placeholder="Enter email"
