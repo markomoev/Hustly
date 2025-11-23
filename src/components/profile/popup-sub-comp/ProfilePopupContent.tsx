@@ -1,15 +1,22 @@
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import DataLoader from "./hooks/DataLoader"
+import ProfileImageUpload from './hooks/ProfileImageUpload'
+import ProfileImageUrl from './hooks/ProfileImageUrl'
+
+import {supabase} from '../../../client'
+
+// for no profile page users
+import UserImage from './icons/user.jpg'
 
 export default function ProfilePopupContent(){
 // edit mode state
 const [isEditMode, setIsEditMode] = useState(false)
 
-// variables for deatails
+// variables for details
 const [username, setUsername] = useState('')
 const [email, setEmail] = useState('')
 
-// getting the data from the loading functio
+// getting the data from the loading function
 const handleLoadingData = async () => {
     const res : any = await DataLoader()
     setUsername(res[0][0]?.username)
@@ -20,15 +27,67 @@ useEffect(() => {
     handleLoadingData();
 }, [])
 
+// edit mode
+const fileInputRef = useRef<HTMLInputElement>(null)
+
+const handleImageClick = () => {
+  if (isEditMode && fileInputRef.current) {
+    fileInputRef.current.click();
+  }
+};
+
+// image state
+const [image, setImage] = useState<File | null>(null)
+const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
+
+const handleImageUpload = async () => {
+    // user id
+    const { data: { user } } = await supabase.auth.getUser();
+    const user_id: any = user?.id;
+
+    if (image) {
+        const filePath = await ProfileImageUpload({ image });
+        if (!filePath) {
+            console.error("Upload failed, no file path returned.");
+            return;
+        }
+        const imageUrl = ProfileImageUrl(filePath);
+
+        // update the users table after the image url is extracted
+        const { data, error } = await supabase
+            .from('users')
+            .update({ 'avatar_url': imageUrl })
+            .eq('id', user_id);
+
+        if (error) {
+            console.error("Error in inserting the avatar url! " + error.message);
+            return;
+        }
+        setAvatarUrl(imageUrl);
+        return data;
+    }
+}
 return(
 <div className="flex flex-col gap-8 p-8 bg-zinc-900/50 rounded-tr-lg rounded-br-lg rounded-bl-lg">
     {/* Profile Image and Basic Info */}
     <div className="flex gap-6 items-center">
-        <div className="w-32 h-32 rounded-full overflow-hidden ">
+        <div
+            onClick = {handleImageClick} 
+            className={`w-32 h-32 rounded-full overflow-hidden `}>
+            
+            <input 
+                type="file"
+                ref = {fileInputRef}
+                onChange={(e) => 
+                        {if(e.target.files)
+                        {setImage(e.target.files[0])}}} 
+                style = {{display: 'none'}}
+                className = {`z-0`}/>
+            
             <img 
-                src="" 
-                alt="Profile" 
-                className="w-full h-full object-cover"
+                src={avatarUrl || UserImage} 
+                alt="Profile Picture" 
+                className="w-full h-full object-cover z-10"
             />
         </div>
         
@@ -38,7 +97,7 @@ return(
                 <input
                     value = {username}
                     onChange = {(e) => setUsername(e.target.value)} 
-                    readOnly
+                    readOnly  = {!isEditMode}
                     type="text" 
                     placeholder="Enter username"
                     className="px-4 py-2 bg-zinc-800 text-white rounded-lg border border-zinc-700 focus:outline-none focus:border-amber-700 transition"
@@ -50,7 +109,7 @@ return(
                 <input 
                     value = {email}
                     onChange = {(e) => setEmail(e.target.value)}
-                    readOnly
+                    readOnly  = {!isEditMode}
                     type="email" 
                     placeholder="Enter email"
                     className="px-4 py-2 bg-zinc-800 text-white rounded-lg border border-zinc-700 focus:outline-none focus:border-amber-700 transition"
@@ -61,11 +120,13 @@ return(
 
     {/* Profile Info */}
     <div>
-        <form className="flex flex-col gap-4">
+        <form
+            onSubmit = {(e) => {e.preventDefault(); handleImageUpload()}}  
+            className="flex flex-col gap-4">
             <div className="flex flex-col gap-2">
                 <label className="text-white text-sm font-medium">Bio</label>
                 <textarea
-                    readOnly 
+                    readOnly  = {!isEditMode}
                     placeholder="Tell us about yourself"
                     rows={4}
                     className="px-4 py-2 bg-zinc-800 text-white rounded-lg border border-zinc-700 focus:outline-none focus:border-amber-700 transition resize-none"
@@ -84,6 +145,7 @@ return(
                 {/* buttons for edit and save */}
                 <div className="flex gap-3">
                     <button
+                        onClick = {() => setIsEditMode(false)}
                         type="button"
                         className={`cursor-pointer px-6 py-2 bg-zinc-800 hover:bg-zinc-700 text-white font-medium rounded-lg border border-zinc-700 transition
                                     ${isEditMode ? 'display':'hidden'}`}
