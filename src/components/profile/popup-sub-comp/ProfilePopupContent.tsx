@@ -9,7 +9,7 @@ const [isEditMode, setIsEditMode] = useState(false)
 const [username, setUsername] = useState('')
 const [email, setEmail] = useState('')
 
-// getting the data from the loading function
+// getting the data from the loading functio
 const handleLoadingData = async () => {
     const res : any = await DataLoader()
     setUsername(res[0][0]?.username)
