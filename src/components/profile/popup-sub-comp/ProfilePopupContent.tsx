@@ -14,12 +14,16 @@ const [isEditMode, setIsEditMode] = useState(false)
 // variables for details
 const [username, setUsername] = useState('')
 const [email, setEmail] = useState('')
+const [firstName, setFirstName] = useState('')
+const [lastName, setLastName] = useState('')
 
 // getting the data from the loading function
 const handleLoadingData = async () => {
     const res : any = await DataLoader()
     setUsername(res[0][0]?.username)
     setEmail(res[1])
+    setFirstName(res[0][0]?.firstName)
+    setLastName(res[0][0]?.lastName)
     setAvatarUrl(res[0][0]?.avatar_url || null);
 }
 
@@ -99,6 +103,35 @@ return(
     <div>
         <form
             className="flex flex-col gap-4">
+
+            {/* Inputs for names */}
+            <div className = 'w-full flex flex-row gap-4'>
+                <div className = 'flex flex-col gap-2'>
+                    <label className="text-white text-sm font-medium">First name</label>
+                    <input 
+                        value = {firstName}
+                        onChange={(e) => setFirstName(e.target.value)}
+                        readOnly  = {!isEditMode}
+                        type="text" 
+                        placeholder="Enter your first name"
+                        className="px-4 py-2 bg-zinc-800 text-white rounded-lg border border-zinc-700 focus:outline-none focus:border-amber-700 transition"
+                    />
+                </div>
+
+                <div className="flex flex-col gap-2">
+                    <label className="text-white text-sm font-medium">Last name</label>
+                    <input 
+                        value = {lastName}
+                        onChange={(e) => setLastName(e.target.value)}
+                        readOnly  = {!isEditMode}
+                        type="text" 
+                        placeholder="Enter your last name"
+                        className="px-4 py-2 bg-zinc-800 text-white rounded-lg border border-zinc-700 focus:outline-none focus:border-amber-700 transition"
+                    />
+                </div>
+            </div>
+
+
             <div className="flex flex-col gap-2">
                 <label className="text-white text-sm font-medium">Bio</label>
                 <textarea
