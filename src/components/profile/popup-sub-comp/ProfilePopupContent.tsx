@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react"
+
 import DataLoader from "./hooks/DataLoader"
 import ProfileImageUpload from './hooks/ProfileImageUpload'
-
-//import {supabase} from '../../../client'
+import SaveCancel from './hooks/SaveCancel'
 
 // for no profile page users
 import UserImage from './icons/user.jpg'
@@ -16,6 +16,7 @@ const [username, setUsername] = useState('')
 const [email, setEmail] = useState('')
 const [firstName, setFirstName] = useState('')
 const [lastName, setLastName] = useState('')
+const [bio, setBio] = useState ('')
 
 // getting the data from the loading function
 const handleLoadingData = async () => {
@@ -24,6 +25,7 @@ const handleLoadingData = async () => {
     setEmail(res[1])
     setFirstName(res[0][0]?.firstName)
     setLastName(res[0][0]?.lastName)
+    setBio(res[0][0]?.bio)
     setAvatarUrl(res[0][0]?.avatar_url || null);
 }
 
@@ -39,6 +41,19 @@ const handleImageClick = () => {
     fileInputRef.current.click();
   }
 };
+
+const handleSaving = async() => {
+    if(isEditMode === true){
+        await SaveCancel({username, firstName, lastName, bio})
+        setIsEditMode(false)
+    }
+    return;
+}
+
+const Reload = () => {
+    setIsEditMode(false)
+    handleLoadingData();
+}
 
 // image state
 const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
@@ -102,6 +117,7 @@ return(
     {/* Profile Info */}
     <div>
         <form
+            onSubmit={e => { e.preventDefault(); handleSaving(); }}
             className="flex flex-col gap-4">
 
             {/* Inputs for names */}
@@ -135,6 +151,8 @@ return(
             <div className="flex flex-col gap-2">
                 <label className="text-white text-sm font-medium">Bio</label>
                 <textarea
+                    value = {bio}
+                    onChange = {(e) => setBio(e.target.value)}
                     readOnly  = {!isEditMode}
                     placeholder="Tell us about yourself"
                     rows={4}
@@ -154,7 +172,7 @@ return(
                 {/* buttons for edit and save */}
                 <div className="flex gap-3">
                     <button
-                        onClick = {() => setIsEditMode(false)}
+                        onClick = {Reload}
                         type="button"
                         className={`cursor-pointer px-6 py-2 bg-zinc-800 hover:bg-zinc-700 text-white font-medium rounded-lg border border-zinc-700 transition
                                     ${isEditMode ? 'display':'hidden'}`}
