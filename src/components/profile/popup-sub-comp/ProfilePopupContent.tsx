@@ -1,9 +1,8 @@
 import { useEffect, useRef, useState } from "react"
 import DataLoader from "./hooks/DataLoader"
 import ProfileImageUpload from './hooks/ProfileImageUpload'
-import ProfileImageUrl from './hooks/ProfileImageUrl'
 
-import {supabase} from '../../../client'
+//import {supabase} from '../../../client'
 
 // for no profile page users
 import UserImage from './icons/user.jpg'
@@ -21,6 +20,7 @@ const handleLoadingData = async () => {
     const res : any = await DataLoader()
     setUsername(res[0][0]?.username)
     setEmail(res[1])
+    setAvatarUrl(res[0][0]?.avatar_url || null);
 }
 
 useEffect(() => {
@@ -37,35 +37,13 @@ const handleImageClick = () => {
 };
 
 // image state
-const [image, setImage] = useState<File | null>(null)
 const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
 
-const handleImageUpload = async () => {
-    // user id
-    const { data: { user } } = await supabase.auth.getUser();
-    const user_id: any = user?.id;
-
-    if (image) {
-        const filePath = await ProfileImageUpload({ image });
-        if (!filePath) {
-            console.error("Upload failed, no file path returned.");
-            return;
-        }
-        const imageUrl = ProfileImageUrl(filePath);
-
-        // update the users table after the image url is extracted
-        const { data, error } = await supabase
-            .from('users')
-            .update({ 'avatar_url': imageUrl })
-            .eq('id', user_id);
-
-        if (error) {
-            console.error("Error in inserting the avatar url! " + error.message);
-            return;
-        }
-        setAvatarUrl(imageUrl);
-        return data;
-    }
+const changeAvatar = async (e:any) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const url : any = await ProfileImageUpload(file)
+    setAvatarUrl(url);
 }
 return(
 <div className="flex flex-col gap-8 p-8 bg-zinc-900/50 rounded-tr-lg rounded-br-lg rounded-bl-lg">
@@ -77,10 +55,9 @@ return(
             
             <input 
                 type="file"
+                accept = 'image/*'
                 ref = {fileInputRef}
-                onChange={(e) => 
-                        {if(e.target.files)
-                        {setImage(e.target.files[0])}}} 
+                onChange = {changeAvatar}
                 style = {{display: 'none'}}
                 className = {`z-0`}/>
             
@@ -121,7 +98,6 @@ return(
     {/* Profile Info */}
     <div>
         <form
-            onSubmit = {(e) => {e.preventDefault(); handleImageUpload()}}  
             className="flex flex-col gap-4">
             <div className="flex flex-col gap-2">
                 <label className="text-white text-sm font-medium">Bio</label>
