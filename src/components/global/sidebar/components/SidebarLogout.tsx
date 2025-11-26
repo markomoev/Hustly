@@ -20,7 +20,7 @@ const signOut = async () => {
         return;
     }
 
-    navigate('./signin')
+    navigate('/signin')
 }
 
 return(

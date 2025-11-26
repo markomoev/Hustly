@@ -12,9 +12,9 @@ return(
     <div 
         onMouseEnter={() => setIsOpen(true)}
         onMouseLeave={() => setIsOpen(false)}
-        className = 'md:w-50 h-auto px-5 py-2 bg-zinc-900/50 rounded-xl'>
+        className = 'md:w-50 h-auto px-5 py-2 bg-zinc-900/50 rounded-xl flex flex-col gap-2'>
         <NavLink
-        className = 'flex flex-row px-1 py-1 gap-2'
+        className = 'flex flex-row w-full px-1 py-1 gap-2'
         to ={'/profile'}
         
         >
@@ -24,7 +24,7 @@ return(
 
         <NavLink
         className = 'flex flex-row px-1 py-1 gap-2'
-        to =""
+        to = ""
         
         >
             <img src={SettingsIcon} alt="User Icon" className = 'mt-1 w-5 h-4' />
