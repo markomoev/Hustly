@@ -30,7 +30,7 @@ export default async function ProfileImageUpload(file: any) {
             .storage
             .from('user_avatar')
             .getPublicUrl(filePath);
-        console.log("Public URL object:", publicUrl);
+
 
         // save the url in the users table
         const { error: uploadingUrl } = await supabase

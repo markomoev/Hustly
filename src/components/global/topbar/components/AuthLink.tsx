@@ -4,6 +4,7 @@ import { NavLink } from "react-router-dom"
 import {supabase} from '../../../../client'
 
 import ProfileDisplay from "./ProfileDisplay"
+import ProfileAvatar from "./ProfileAvatar"
 
 export default function AuthLink(){
 // username variables
@@ -43,9 +44,10 @@ useEffect(() => {
 return(
  <div className="flex flex-row gap-4 w-full justify-end items-center">
     {isLoggedIn && nickname ?
-        <div className = 'w-full'> 
+        <div className = 'w-full flex flex-row items-center justify-end gap-3'> 
             <ProfileDisplay
                 nickname = {nickname}/>
+            <ProfileAvatar />
         </div>
         : 
         <>
