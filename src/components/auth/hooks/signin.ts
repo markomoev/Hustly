@@ -1,6 +1,6 @@
 import {supabase} from '../../../client'
 
-export const signInUser = async (email: string, password: string) => {
+export const signInUser = async(email: string, password: string) => {    
     try{
         const { data, error: signinUserError } = await supabase.auth.signInWithPassword({
             email,
@@ -8,13 +8,11 @@ export const signInUser = async (email: string, password: string) => {
         })
 
         if(signinUserError){
-            console.error('Error in signing in! ' + signinUserError.message )
-            return null;
+            return {error: signinUserError.message, data: null};
         }
-        return data;
+        return {error: null, data: data}
     }
     catch(error){
-        console.error('An unexpected error occured!', error)
-        return null;
+        return {error: "Unexpected error", data: null}
     }
 }

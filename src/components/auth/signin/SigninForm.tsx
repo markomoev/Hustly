@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 
 import {signInUser} from '../hooks/signin'
 
+import Error from '../../alerts/Error';
+
 export default function SigninForm() {
   // for navigating after successful signin
   const navigate = useNavigate()
@@ -11,18 +13,33 @@ export default function SigninForm() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
+  // for error message display
+  const [errorMessage, setErrorMessage] = useState('')
+
 
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault()
     const result = await signInUser(email, password)
-    if (result) {
-      navigate('/')
+
+    if(result && result.error){
+      setErrorMessage(result.error)
+      return;
     }
+
+    navigate('/')
+    setErrorMessage('')    
   }
 
 
 return(
-  <div className="flex flex-col gap-6 items-center justify-center bg-zinc-900/50 rounded-xl p-8 ">
+<>
+{errorMessage && (
+  <div className="text-black fixed left-13 top-0 w-full flex justify-center z-50 pt-5 overflow-x-hidden">
+    <Error message={errorMessage} />
+  </div>
+)}
+  
+  <div className="overflow-x-hidden flex flex-col gap-6 items-center justify-center bg-zinc-900/50 rounded-xl p-8 ">
     <form 
       className="flex flex-col gap-6 w-full"
       onSubmit={handleSignIn}
@@ -53,5 +70,6 @@ return(
       </button>
     </form>
   </div>
+</>
 );
 }
