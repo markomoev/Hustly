@@ -54,7 +54,7 @@ useEffect(() => {
 return(
 <div className="flex flex-row gap-4 w-full justify-end items-center">
     { isLoading ? (
-        <div>
+        <div className = '-mt-6.5'>
             <Loader />
         </div>
     ) 

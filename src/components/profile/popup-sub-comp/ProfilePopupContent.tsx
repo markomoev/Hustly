@@ -1,14 +1,16 @@
 import { useEffect, useRef, useState } from "react"
 
+// fetching data
 import DataLoader from "./hooks/DataLoader"
 import ProfileImageUpload from './hooks/ProfileImageUpload'
 import SaveCancel from './hooks/SaveCancel'
 
 // for no profile page users
 import UserImage from './icons/user.jpg'
-
 // error message
 import Error from "../../alerts and loaders/Error"
+//for loading
+import Loader from "../../alerts and loaders/Loader"
 
 export default function ProfilePopupContent(){
 // edit mode state
@@ -24,8 +26,12 @@ const [bio, setBio] = useState ('')
 // for error display
 const [errorMessage, setErrorMessage] = useState('')
 
+// state for loader
+const [isLoading, setIsLoading] = useState(false)
+
 // getting the data from the loading function
 const handleLoadingData = async () => {
+    setIsLoading(true)
     const res : any = await DataLoader()
 
     setUsername(res.data[0][0]?.username || "");
@@ -41,6 +47,7 @@ const handleLoadingData = async () => {
     }
 
     setErrorMessage('') 
+    setIsLoading(false)
 }
 
 useEffect(() => {
@@ -94,12 +101,17 @@ const changeAvatar = async (e:any) => {
 }
 return(
 <>
-{errorMessage && (
-<div className="text-black fixed left-13 top-0 w-full flex justify-center z-50 pt-5 overflow-x-hidden">
-    <Error message={errorMessage} />
-</div>
+    {errorMessage && (
+    <div className="text-black fixed left-13 top-0 w-full flex justify-center z-50 pt-5 overflow-x-hidden">
+        <Error message={errorMessage} />
+    </div>
 )}
-    <div className="flex flex-col gap-8 p-8 bg-zinc-900/50 rounded-tr-lg rounded-br-lg rounded-bl-lg">
+    <div className="flex flex-col gap-8 p-8 bg-zinc-900/50 rounded-tr-lg rounded-br-lg rounded-bl-lg relative">
+        { isLoading && (
+            <div className="absolute inset-0 z-50 flex items-center justify-center bg-zinc-900/20 backdrop-blur-[1px] rounded-lg cursor-wait">
+                <Loader/>
+            </div>
+        )}
         {/* Profile Image and Basic Info */}
         <div className="flex gap-6 items-center">
             <div

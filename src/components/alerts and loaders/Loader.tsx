@@ -2,11 +2,11 @@ import Loading from './icons/loading.gif'
 
 export default function Loader() {
     return (
-        <div className="-mt-4">
+        <div className="flex justify-center items-center">
             <img 
                 src={Loading} 
                 alt="Loading..." 
-                className="w-20 h-20"
+                className='w-27 h-27 object-contain'
             />
         </div>
     )
