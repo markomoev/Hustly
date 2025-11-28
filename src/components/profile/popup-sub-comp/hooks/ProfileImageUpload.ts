@@ -1,19 +1,16 @@
 import {supabase} from '../../../../client'
 
 export default async function ProfileImageUpload(file: any) {
-    console.log('ProfileImageUpload called with:', file);
     try {
         // user id
         const { data: { user } } = await supabase.auth.getUser();
         const user_id: any = user?.id;
 
         if (!file || !file.name) {
-            console.error('Invalid file object:', file);
-            return;
+            return {error: "Invalid file object", data: null}
         }
 
         const filePath = `${user_id}/${file.name}`;
-        console.log('Uploading file:', file, 'with path:', filePath);
 
         // upload the image to the storage
         const { error: uploadError } = await supabase.storage
@@ -21,8 +18,7 @@ export default async function ProfileImageUpload(file: any) {
             .upload(filePath, file, { upsert: true });
 
         if (uploadError) {
-            console.error("Error in uploading the file! " + uploadError.message);
-            return;
+            return {error: uploadError.message, data: null}
         }
 
         // getting the public url
@@ -39,13 +35,12 @@ export default async function ProfileImageUpload(file: any) {
             .eq('id', user_id);
 
         if (uploadingUrl) {
-            console.error('Error in inserting uploading the URL!' + uploadingUrl.message);
-            return;
+            return {error: uploadingUrl.message, data: null}
         }
 
         return publicUrl.publicUrl;
 
     } catch (error) {
-        console.error("An unexpected error occurred! " + error);
+        return {error: "An unexpected error occurred", data: null}
     }
 }

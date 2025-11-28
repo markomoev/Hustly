@@ -8,8 +8,7 @@ try{
     const user_email : any = user?.email;
 
     if(errorGettingUser){
-        console.error("Error in retrieving user! " + errorGettingUser.message);
-        return
+        return {error: errorGettingUser.message, data: null}
     }
 
     const {data: fetchingUserDetails, error: fetchingError} = await supabase
@@ -18,16 +17,13 @@ try{
             .eq('id', user_id)
 
     if(fetchingError){
-        console.error('Error in fetching data!' + fetchingError.message)
-        return;
+        return{error: fetchingError.message, data: null}
     }
     const result = [fetchingUserDetails, user_email]
-    return result;
-
+    return {error: null, data: result}
 }
 catch(error){
-    console.error("An unexpected error occured! " + error)
-    return;
+    return {error: "An unexpected error occured", data: null}
 }
 
 }

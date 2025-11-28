@@ -7,6 +7,9 @@ import SaveCancel from './hooks/SaveCancel'
 // for no profile page users
 import UserImage from './icons/user.jpg'
 
+// error message
+import Error from "../../alerts/Error"
+
 export default function ProfilePopupContent(){
 // edit mode state
 const [isEditMode, setIsEditMode] = useState(false)
@@ -18,15 +21,26 @@ const [firstName, setFirstName] = useState('')
 const [lastName, setLastName] = useState('')
 const [bio, setBio] = useState ('')
 
+// for error display
+const [errorMessage, setErrorMessage] = useState('')
+
 // getting the data from the loading function
 const handleLoadingData = async () => {
     const res : any = await DataLoader()
-    setUsername(res[0][0]?.username)
-    setEmail(res[1])
-    setFirstName(res[0][0]?.firstName)
-    setLastName(res[0][0]?.lastName)
-    setBio(res[0][0]?.bio)
-    setAvatarUrl(res[0][0]?.avatar_url || null);
+
+    setUsername(res.data[0][0]?.username || "");
+    setEmail(res.data[1] || "");
+    setFirstName(res.data[0][0]?.firstName || "");
+    setLastName(res.data[0][0]?.lastName || "");
+    setBio(res.data[0][0]?.bio || "");
+    setAvatarUrl(res.data[0][0]?.avatar_url || null);
+
+    if(res && res.error){
+        setErrorMessage(res.error)
+        return;
+    }
+
+    setErrorMessage('') 
 }
 
 useEffect(() => {
@@ -44,7 +58,14 @@ const handleImageClick = () => {
 
 const handleSaving = async() => {
     if(isEditMode === true){
-        await SaveCancel({username, firstName, lastName, bio})
+        const res: any = await SaveCancel({username, firstName, lastName, bio})
+
+        if(res && res.error){
+            setErrorMessage(res.error)
+            return;
+        }
+
+        setErrorMessage('') 
         setIsEditMode(false)
     }
     return;
@@ -63,134 +84,148 @@ const changeAvatar = async (e:any) => {
     if (!file) return;
     const url : any = await ProfileImageUpload(file)
     setAvatarUrl(url);
+
+    if(url && url.error){
+        setErrorMessage(url.error)
+        return;
+    }
+
+    setErrorMessage('') 
 }
 return(
-<div className="flex flex-col gap-8 p-8 bg-zinc-900/50 rounded-tr-lg rounded-br-lg rounded-bl-lg">
-    {/* Profile Image and Basic Info */}
-    <div className="flex gap-6 items-center">
-        <div
-            onClick = {handleImageClick} 
-            className={`w-32 h-32 rounded-full overflow-hidden `}>
-            
-            <input 
-                type="file"
-                accept = 'image/*'
-                ref = {fileInputRef}
-                onChange = {changeAvatar}
-                style = {{display: 'none'}}
-                className = {`z-0`}/>
-            
-            <img 
-                src={avatarUrl || UserImage} 
-                alt="Profile Picture" 
-                className="w-full h-full object-cover z-10"
-            />
-        </div>
-        
-        <div className="flex flex-col gap-4 flex-1">
-            <div className="flex flex-col gap-2">
-                <label className="text-white text-sm font-medium">Username</label>
-                <input
-                    value = {username}
-                    onChange = {(e) => setUsername(e.target.value)} 
-                    readOnly  = {!isEditMode}
-                    type="text" 
-                    placeholder="Enter username"
-                    className="px-4 py-2 bg-zinc-800 text-white rounded-lg border border-zinc-700 focus:outline-none focus:border-amber-700 transition"
-                />
-            </div>
-            
-            <div className="flex flex-col gap-2">
-                <label className="text-white text-sm font-medium">Email</label>
+<>
+{errorMessage && (
+<div className="text-black fixed left-13 top-0 w-full flex justify-center z-50 pt-5 overflow-x-hidden">
+    <Error message={errorMessage} />
+</div>
+)}
+    <div className="flex flex-col gap-8 p-8 bg-zinc-900/50 rounded-tr-lg rounded-br-lg rounded-bl-lg">
+        {/* Profile Image and Basic Info */}
+        <div className="flex gap-6 items-center">
+            <div
+                onClick = {handleImageClick} 
+                className={`w-32 h-32 rounded-full overflow-hidden `}>
+                
                 <input 
-                    value = {email}
-                    onChange = {(e) => setEmail(e.target.value)}
-                    readOnly  = {!isEditMode}
-                    type="email" 
-                    placeholder="Enter email"
-                    className="px-4 py-2 bg-zinc-800 text-white rounded-lg border border-zinc-700 focus:outline-none focus:border-amber-700 transition"
+                    type="file"
+                    accept = 'image/*'
+                    ref = {fileInputRef}
+                    onChange = {changeAvatar}
+                    style = {{display: 'none'}}
+                    className = {`z-0`}/>
+                
+                <img 
+                    src={avatarUrl || UserImage} 
+                    alt="Profile Picture" 
+                    className="w-full h-full object-cover z-10"
                 />
             </div>
-        </div>
-    </div>
-
-    {/* Profile Info */}
-    <div>
-        <form
-            onSubmit={e => { e.preventDefault(); handleSaving(); }}
-            className="flex flex-col gap-4">
-
-            {/* Inputs for names */}
-            <div className = 'w-full flex flex-row gap-4'>
-                <div className = 'flex flex-col gap-2'>
-                    <label className="text-white text-sm font-medium">First name</label>
-                    <input 
-                        value = {firstName}
-                        onChange={(e) => setFirstName(e.target.value)}
+            
+            <div className="flex flex-col gap-4 flex-1">
+                <div className="flex flex-col gap-2">
+                    <label className="text-white text-sm font-medium">Username</label>
+                    <input
+                        value = {username}
+                        onChange = {(e) => setUsername(e.target.value)} 
                         readOnly  = {!isEditMode}
                         type="text" 
-                        placeholder="Enter your first name"
+                        placeholder="Enter username"
                         className="px-4 py-2 bg-zinc-800 text-white rounded-lg border border-zinc-700 focus:outline-none focus:border-amber-700 transition"
                     />
                 </div>
+                
+                <div className="flex flex-col gap-2">
+                    <label className="text-white text-sm font-medium">Email</label>
+                    <input 
+                        value = {email}
+                        onChange = {(e) => setEmail(e.target.value)}
+                        readOnly  = {!isEditMode}
+                        type="email" 
+                        placeholder="Enter email"
+                        className="px-4 py-2 bg-zinc-800 text-white rounded-lg border border-zinc-700 focus:outline-none focus:border-amber-700 transition"
+                    />
+                </div>
+            </div>
+        </div>
+
+        {/* Profile Info */}
+        <div>
+            <form
+                onSubmit={e => { e.preventDefault(); handleSaving(); }}
+                className="flex flex-col gap-4">
+
+                {/* Inputs for names */}
+                <div className = 'w-full flex flex-row gap-4'>
+                    <div className = 'flex flex-col gap-2'>
+                        <label className="text-white text-sm font-medium">First name</label>
+                        <input 
+                            value = {firstName}
+                            onChange={(e) => setFirstName(e.target.value)}
+                            readOnly  = {!isEditMode}
+                            type="text" 
+                            placeholder="Enter your first name"
+                            className="px-4 py-2 bg-zinc-800 text-white rounded-lg border border-zinc-700 focus:outline-none focus:border-amber-700 transition"
+                        />
+                    </div>
+
+                    <div className="flex flex-col gap-2">
+                        <label className="text-white text-sm font-medium">Last name</label>
+                        <input 
+                            value = {lastName}
+                            onChange={(e) => setLastName(e.target.value)}
+                            readOnly  = {!isEditMode}
+                            type="text" 
+                            placeholder="Enter your last name"
+                            className="px-4 py-2 bg-zinc-800 text-white rounded-lg border border-zinc-700 focus:outline-none focus:border-amber-700 transition"
+                        />
+                    </div>
+                </div>
+
 
                 <div className="flex flex-col gap-2">
-                    <label className="text-white text-sm font-medium">Last name</label>
-                    <input 
-                        value = {lastName}
-                        onChange={(e) => setLastName(e.target.value)}
+                    <label className="text-white text-sm font-medium">Bio</label>
+                    <textarea
+                        value = {bio}
+                        onChange = {(e) => setBio(e.target.value)}
                         readOnly  = {!isEditMode}
-                        type="text" 
-                        placeholder="Enter your last name"
-                        className="px-4 py-2 bg-zinc-800 text-white rounded-lg border border-zinc-700 focus:outline-none focus:border-amber-700 transition"
+                        placeholder="Tell us about yourself"
+                        rows={4}
+                        className="px-4 py-2 bg-zinc-800 text-white rounded-lg border border-zinc-700 focus:outline-none focus:border-amber-700 transition resize-none"
                     />
                 </div>
-            </div>
 
-
-            <div className="flex flex-col gap-2">
-                <label className="text-white text-sm font-medium">Bio</label>
-                <textarea
-                    value = {bio}
-                    onChange = {(e) => setBio(e.target.value)}
-                    readOnly  = {!isEditMode}
-                    placeholder="Tell us about yourself"
-                    rows={4}
-                    className="px-4 py-2 bg-zinc-800 text-white rounded-lg border border-zinc-700 focus:outline-none focus:border-amber-700 transition resize-none"
-                />
-            </div>
-
-            {/* buttons for making changes */}
-            <div className='w-full flex flex-row justify-between items-center mt-2'>
-                <button
-                    onClick = {() => setIsEditMode(true)}
-                    type="button"
-                    className="cursor-pointer px-6 py-2 bg-zinc-800 hover:bg-zinc-700 text-white font-medium rounded-lg border border-zinc-700 transition"
-                >
-                    Edit 
-                </button>
-                {/* buttons for edit and save */}
-                <div className="flex gap-3">
+                {/* buttons for making changes */}
+                <div className='w-full flex flex-row justify-between items-center mt-2'>
                     <button
-                        onClick = {Reload}
+                        onClick = {() => setIsEditMode(true)}
                         type="button"
-                        className={`cursor-pointer px-6 py-2 bg-zinc-800 hover:bg-zinc-700 text-white font-medium rounded-lg border border-zinc-700 transition
-                                    ${isEditMode ? 'display':'hidden'}`}
-                    > 
-                        Cancel
-                    </button>
-
-                    <button 
-                        type="submit"
-                        className={`cursor-pointer px-6 py-2 bg-amber-700 hover:bg-amber-600 text-white font-medium rounded-lg transition
-                                    ${isEditMode ? 'display':'hidden'}`}
+                        className="cursor-pointer px-6 py-2 bg-zinc-800 hover:bg-zinc-700 text-white font-medium rounded-lg border border-zinc-700 transition"
                     >
-                        Save
+                        Edit 
                     </button>
+                    {/* buttons for edit and save */}
+                    <div className="flex gap-3">
+                        <button
+                            onClick = {Reload}
+                            type="button"
+                            className={`cursor-pointer px-6 py-2 bg-zinc-800 hover:bg-zinc-700 text-white font-medium rounded-lg border border-zinc-700 transition
+                                        ${isEditMode ? 'display':'hidden'}`}
+                        > 
+                            Cancel
+                        </button>
+
+                        <button 
+                            type="submit"
+                            className={`cursor-pointer px-6 py-2 bg-amber-700 hover:bg-amber-600 text-white font-medium rounded-lg transition
+                                        ${isEditMode ? 'display':'hidden'}`}
+                        >
+                            Save
+                        </button>
+                    </div>
                 </div>
-            </div>
-        </form>
+            </form>
+        </div>
     </div>
-</div>
+</>
 )
 }
