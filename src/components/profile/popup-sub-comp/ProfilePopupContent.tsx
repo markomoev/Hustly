@@ -8,7 +8,7 @@ import SaveCancel from './hooks/SaveCancel'
 import UserImage from './icons/user.jpg'
 
 // error message
-import Error from "../../alerts/Error"
+import Error from "../../alerts and loaders/Error"
 
 export default function ProfilePopupContent(){
 // edit mode state

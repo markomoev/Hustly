@@ -1,6 +1,7 @@
-import { useState} from 'react'
+import { useState } from 'react'
 
 import ArrowDownIcon from './icons/arrow-down.png'
+
 import ProfileMenu from './ProileMenu'
 
 type nicknameString = {

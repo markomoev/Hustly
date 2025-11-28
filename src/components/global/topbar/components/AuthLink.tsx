@@ -3,16 +3,25 @@ import { NavLink } from "react-router-dom"
 
 import {supabase} from '../../../../client'
 
+// displaying username and avatar
 import ProfileDisplay from "./ProfileDisplay"
 import ProfileAvatar from "./ProfileAvatar"
+// for loading username
+import Loader from '../../../alerts and loaders/Loader'
+
 
 export default function AuthLink(){
 // username variables
 const [nickname, setNickname] = useState('')
 const [isLoggedIn, setIsLoggedIn] = useState(false)
 
+// state for loading gif
+const [isLoading, setIsLoading] = useState(false)
+
 // taking the username
 const handleLogin = useEffectEvent( async () => {
+    setIsLoading(true)
+
     const { data: { user } } = await supabase.auth.getUser()
     const user_id : any = user?.id;
 
@@ -29,6 +38,7 @@ const handleLogin = useEffectEvent( async () => {
             }
             setNickname(fetchedUsername[0]?.username)
             setIsLoggedIn(true)
+            setIsLoading(false)
             return nickname;
         }
     }
@@ -39,18 +49,25 @@ const handleLogin = useEffectEvent( async () => {
 
 useEffect(() => {
     handleLogin();
-}, [handleLogin]);
+}, []);
 
 return(
- <div className="flex flex-row gap-4 w-full justify-end items-center">
-    {isLoggedIn && nickname ?
-        <div className = 'w-full flex flex-row items-center justify-end gap-3'> 
+<div className="flex flex-row gap-4 w-full justify-end items-center">
+    { isLoading ? (
+        <div>
+            <Loader />
+        </div>
+    ) 
+    :
+    isLoggedIn ? 
+    ( <div className = 'w-full flex flex-row items-center justify-end gap-3'> 
             <ProfileDisplay
                 nickname = {nickname}/>
             <ProfileAvatar />
         </div>
-        : 
-        <>
+        )
+    : 
+    ( <>
             <NavLink
                 to={'/signup'}
                 className="px-5 py-2 bg-zinc-900 text-zinc-300 rounded-full text-base font-medium transition-colors duration-200 hover:bg-zinc-700 focus:outline-none focus:ring-2 focus:ring-zinc-500"
@@ -63,7 +80,7 @@ return(
             >
                 Sign in
             </NavLink>
-        </>
+        </> )
     }
 </div>
 )

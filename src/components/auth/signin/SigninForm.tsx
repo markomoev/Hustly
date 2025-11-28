@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 import {signInUser} from '../hooks/signin'
 
-import Error from '../../alerts/Error';
+import Error from '../../alerts and loaders/Error';
 
 export default function SigninForm() {
   // for navigating after successful signin
