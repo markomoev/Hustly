@@ -1,8 +1,14 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import {signUpUser} from '../hooks/signup'
 
+import Error from '../../alerts/Error'
+
 export default function SignupForm() {
+    // for navigating after successful signin
+    const navigate = useNavigate()
+
     // state management of the signup credentials
     const [username, setUsername] = useState('')
     const [email, setEmail] = useState('')
@@ -10,12 +16,30 @@ export default function SignupForm() {
     const [firstName, setFirstName] = useState('')
     const [lastName, setLastName] = useState('')
     
+    // for error message display
+    const [errorMessage, setErrorMessage] = useState('')
+
     const handleSignUp = async (e: React.FormEvent) =>  {
         e.preventDefault()
-        await signUpUser(email, username, password, firstName, lastName)
+        const result : any = await signUpUser(email, username, password, firstName, lastName)
+
+        if(result && result.error){
+        setErrorMessage(result.error)
+        return;
+        }
+
+        navigate('/')
+        setErrorMessage('') 
     }
 
+
     return (
+    <>
+        {errorMessage && (
+        <div className="text-black fixed left-13 top-0 w-full flex justify-center z-50 pt-5 overflow-x-hidden">
+            <Error message={errorMessage} />
+        </div>
+        )}
         <div className="flex flex-col gap-6 items-center justify-center bg-zinc-900/40 rounded-xl p-8">
             <form 
                 className="flex flex-col gap-6 w-full"
@@ -72,5 +96,6 @@ export default function SignupForm() {
                 </button>
             </form>
         </div>
+    </>
     );
 }

@@ -13,8 +13,7 @@ export const signUpUser = async (email: string,
         })
     
         if(createUserError){
-            console.error('Error in signing up!' + createUserError.message)
-            return;
+            return {error: createUserError.message, data: data}
         }
         // if there is no error update the table for the users too
         if(data){
@@ -31,12 +30,12 @@ export const signUpUser = async (email: string,
             .eq('id', user_id)
             
             if(tableError){
-                console.error('Error in inserting date in the table! ' + tableError.message)
+                return {error: tableError.message, data: data}
             }
 
-            return data;
+            return {error: null, data: data}
         }
     }catch(error){
-        console.error('An unexpected error occured!')
+        return {error: "An unexpected error occured!", data: null}
     }
 }
