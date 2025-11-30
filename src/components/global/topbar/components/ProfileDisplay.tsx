@@ -16,7 +16,7 @@ return(
     <div 
         className="w-auto mt-2 flex flex-col relative"
     >
-        <div // on hover open the menu   
+        <div // on hover open the menu
             onMouseEnter={() => setIsOpen(true)}
             onMouseLeave={() => setIsOpen(false)}
             className="flex flex-row items-center justify-between px-4 pt-1.5 pb-2 bg-zinc-900 text-zinc-300 rounded-full text-base font-medium transition-colors duration-200 shadow ml-auto border border-amber-700"

@@ -20,13 +20,12 @@ const [isLoading, setIsLoading] = useState(false)
 
 // taking the username
 const handleLogin = useEffectEvent( async () => {
-    setIsLoading(true)
-
     const { data: { user } } = await supabase.auth.getUser()
     const user_id : any = user?.id;
 
     try{
         if(user_id){
+            setIsLoading(true)
             const {data:fetchedUsername, error: fetchingUsernameError} = await supabase
                 .from('users')
                 .select('username')
