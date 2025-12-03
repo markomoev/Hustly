@@ -1,11 +1,19 @@
 import {supabase} from '../../client'
+// hook for user id and email
+import { useUserId } from '../global/UserId';
 
-export default async function useImageUpload(file: any) {
+export default async function useImageUpload(file: File) {
     try {
-        // user id
-        const { data: { user } } = await supabase.auth.getUser();
-        const user_id: any = user?.id;
+        // geting user id
+        const userDataResponse = await useUserId();
+    
+        if (userDataResponse.error || !userDataResponse.data) {
+            return { error: userDataResponse.error || "User not found", data: null };
+        }
 
+        const user_id = userDataResponse.data[0];
+
+        // checking if there is problem with the uploaded file and taking the file path
         if (!file || !file.name) {
             return {error: "Invalid file object", data: null}
         }
@@ -38,7 +46,7 @@ export default async function useImageUpload(file: any) {
             return {error: uploadingUrl.message, data: null}
         }
 
-        return publicUrl.publicUrl;
+        return {error: null, data: publicUrl.publicUrl};
 
     } catch (error) {
         return {error: "An unexpected error occurred", data: null}

@@ -1,4 +1,6 @@
 import {supabase} from '../../client'
+// hook for fetching user id
+import { useUserId } from '../global/UserId';
 
 type dbProps = {
     username: string,
@@ -9,13 +11,16 @@ type dbProps = {
 
 export default async function useSaveCancel({username, firstName, lastName, bio} : dbProps){
 try{
-    const { data: { user }, error: errorGettingUser } = await supabase.auth.getUser()
-    const user_id : any = user?.id;
+    // geting user id
+    const userDataResponse = await useUserId();
 
-    if(errorGettingUser){
-        return {error: errorGettingUser.message, data: null}
+    if (userDataResponse.error || !userDataResponse.data){
+        return { error: userDataResponse.error || "User not found", data: null };
     }
 
+    const user_id = userDataResponse.data[0];
+
+    // updating the table, when there are changes
     const { error: updateError } = await supabase
     .from('users')
     .update({ 
@@ -26,13 +31,13 @@ try{
      })
     .eq('id', user_id)
 
+    // checking if there's an error when updating the table
     if(updateError){
         return {error: updateError.message, data: null}
     }
 
 }
 catch(error){
-    console.error("An unexpected error occurred! " + error);
     return {error: error || "An unexpected error occurred", data: null}
 }
 }
