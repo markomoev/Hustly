@@ -3,13 +3,19 @@ import {supabase} from "../../client"
 export const useUserId = async () => {
 
     try{
-        const { data: { user }, error: errorGettingUser } = await supabase.auth.getUser()
-        const user_id : any = user?.id;
-        // getting the email too, cause we get them both from auth
-        const user_email : any = user?.email;
+        const { data: {session}, error: errorGettingSession } = await supabase.auth.getSession()
 
-        if(errorGettingUser)
-            return {error: errorGettingUser.message, data: null}
+        if(errorGettingSession){
+            return {error: errorGettingSession.message, data: null}
+        }
+
+        const user = session?.user;
+        const user_id = user?.id;
+        const user_email = user?.email;
+
+        if(!user_id){
+            return {error: "No active session!", data: null}
+        }
 
         return {error: null, data: [user_id, user_email]}
     }
