@@ -14,17 +14,18 @@ import Loader from "../../alerts-loaders/Loader"
 
 export default function ProfilePopupContent(){
 // edit mode state
-const [isEditMode, setIsEditMode] = useState(false)
+const [isEditMode, setIsEditMode] = useState<boolean>(false)
 
 // variables for details
-const [username, setUsername] = useState('')
-const [email, setEmail] = useState('')
-const [firstName, setFirstName] = useState('')
-const [lastName, setLastName] = useState('')
-const [bio, setBio] = useState ('')
+const [username, setUsername] = useState<string>('')
+const [email, setEmail] = useState<string>('')
+const [firstName, setFirstName] = useState<string>('')
+const [lastName, setLastName] = useState<string>('')
+const [bio, setBio] = useState<string>('')
 
-// for error display
-const [errorMessage, setErrorMessage] = useState('')
+// for error display and state if there is an error
+const [errorMessage, setErrorMessage] = useState<string>('')
+const [isError , setIsError] = useState<boolean>(false)
 
 // state for loader
 const [isLoading, setIsLoading] = useState(false)
@@ -42,13 +43,23 @@ const handleLoadingData = async () => {
     setAvatarUrl(res.data[0][0]?.avatar_url || null);
 
     if(res && res.error){
+        setIsError(true)
         setErrorMessage(res.error)
         return;
     }
 
-    setErrorMessage('') 
     setIsLoading(false)
 }
+
+useEffect(() => {
+    if (isError) {
+        const timer = setTimeout(() => {
+            setIsError(false);
+            setErrorMessage('');
+        }, 5000);
+        return () => clearTimeout(timer);
+    }
+}, [isError]);
 
 useEffect(() => {
     handleLoadingData();
@@ -68,6 +79,7 @@ const handleSaving = async() => {
         const res: any = await useSaveCancel({username, firstName, lastName, bio})
 
         if(res && res.error){
+            setIsError(true)
             setErrorMessage(res.error)
             return;
         }
@@ -93,6 +105,7 @@ const changeAvatar = async (e:any) => {
     setAvatarUrl(url);
 
     if(url && url.error){
+        setIsError(true)
         setErrorMessage(url.error)
         return;
     }
@@ -101,7 +114,7 @@ const changeAvatar = async (e:any) => {
 }
 return(
 <>
-    {errorMessage && (
+    {isError && (
     <div className="text-black fixed left-13 top-0 w-full flex justify-center z-50 pt-5 overflow-x-hidden">
         <Error message={errorMessage} />
     </div>

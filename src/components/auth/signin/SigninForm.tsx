@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import {useSignin} from '../../../hooks/auth/signin'
@@ -13,15 +13,16 @@ export default function SigninForm() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
-  // for error message display
+  // for error message display and state 
   const [errorMessage, setErrorMessage] = useState('')
-
+  const [isError, setIsError] = useState<boolean>(false)
 
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault()
     const result = await useSignin(email, password)
 
     if(result && result.error){
+      setIsError(true)
       setErrorMessage(result.error)
       return;
     }
@@ -30,10 +31,17 @@ export default function SigninForm() {
     setErrorMessage('')    
   }
 
+  useEffect(() => {
+    setTimeout(() => {
+        setIsError(false)
+        setErrorMessage('')
+    }, 5000)
+  },[isError])
+
 
 return(
 <>
-{errorMessage && (
+{isError && (
   <div className="text-black fixed left-13 top-0 w-full flex justify-center z-50 pt-5 overflow-x-hidden">
     <Error message={errorMessage} />
   </div>

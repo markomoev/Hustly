@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import {useSignup} from '../../../hooks/auth/signup'
@@ -16,15 +16,17 @@ export default function SignupForm() {
     const [firstName, setFirstName] = useState('')
     const [lastName, setLastName] = useState('')
     
-    // for error message display
+    // for error message display and state
     const [errorMessage, setErrorMessage] = useState('')
+    const [isError, setIsError] = useState<boolean>(false)
 
     const handleSignUp = async (e: React.FormEvent) =>  {
         e.preventDefault()
         const result : any = await useSignup(email, username, password, firstName, lastName)
 
         if(result && result.error){
-        setErrorMessage(result.error)
+            setIsError(true)
+            setErrorMessage(result.error)
         return;
         }
 
@@ -32,10 +34,17 @@ export default function SignupForm() {
         setErrorMessage('') 
     }
 
+    useEffect(() => {
+        setTimeout(() => {
+            setIsError(false)
+            setErrorMessage('')
+        }, 5000)
+    },[isError])
+
 
     return (
     <>
-        {errorMessage && (
+        {isError && (
         <div className="text-black fixed left-13 top-0 w-full flex justify-center z-50 pt-5 overflow-x-hidden">
             <Error message={errorMessage} />
         </div>
