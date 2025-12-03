@@ -1,6 +1,6 @@
-import {supabase} from '../../../client'
+import {supabase} from '../../client'
 
-export const signUpUser = async (email: string,
+export const useSignup = async (email: string,
                                  username: string,
                                  password: string,
                                  firstName:string,

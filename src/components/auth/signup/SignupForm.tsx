@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import {signUpUser} from '../hooks/signup'
+import {useSignup} from '../../../hooks/auth/signup'
 
-import Error from '../../alerts and loaders/Error'
+import Error from '../../alerts-loaders/Error'
 
 export default function SignupForm() {
     // for navigating after successful signin
@@ -21,7 +21,7 @@ export default function SignupForm() {
 
     const handleSignUp = async (e: React.FormEvent) =>  {
         e.preventDefault()
-        const result : any = await signUpUser(email, username, password, firstName, lastName)
+        const result : any = await useSignup(email, username, password, firstName, lastName)
 
         if(result && result.error){
         setErrorMessage(result.error)

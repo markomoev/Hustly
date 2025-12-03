@@ -1,4 +1,4 @@
-import {supabase} from '../../../../client'
+import {supabase} from '../../client'
 
 type dbProps = {
     username: string,
@@ -7,7 +7,7 @@ type dbProps = {
     bio: string
 }
 
-export default async function SaveCancel({username, firstName, lastName, bio} : dbProps){
+export default async function useSaveCancel({username, firstName, lastName, bio} : dbProps){
 try{
     const { data: { user }, error: errorGettingUser } = await supabase.auth.getUser()
     const user_id : any = user?.id;

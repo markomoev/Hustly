@@ -1,6 +1,6 @@
-import {supabase} from '../../../../client'
+import {supabase} from '../../client'
 
-export default async function ProfileImageUpload(file: any) {
+export default async function useImageUpload(file: any) {
     try {
         // user id
         const { data: { user } } = await supabase.auth.getUser();

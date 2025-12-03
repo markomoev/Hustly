@@ -1,6 +1,6 @@
-import {supabase} from '../../../../client'
+import {supabase} from '../../client'
 
-export default async function DataLoader() {
+export default async function useData() {
     
 try{
     const { data: { user }, error: errorGettingUser } = await supabase.auth.getUser()

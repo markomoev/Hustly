@@ -7,7 +7,7 @@ import {supabase} from '../../../../client'
 import ProfileDisplay from "./ProfileDisplay"
 import ProfileAvatar from "./ProfileAvatar"
 // for loading username
-import Loader from '../../../alerts and loaders/Loader'
+import Loader from '../../../alerts-loaders/Loader'
 
 
 export default function AuthLink(){

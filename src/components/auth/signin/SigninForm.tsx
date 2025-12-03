@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import {signInUser} from '../hooks/signin'
+import {useSignin} from '../../../hooks/auth/signin'
 
-import Error from '../../alerts and loaders/Error';
+import Error from '../../alerts-loaders/Error';
 
 export default function SigninForm() {
   // for navigating after successful signin
@@ -19,7 +19,7 @@ export default function SigninForm() {
 
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault()
-    const result = await signInUser(email, password)
+    const result = await useSignin(email, password)
 
     if(result && result.error){
       setErrorMessage(result.error)

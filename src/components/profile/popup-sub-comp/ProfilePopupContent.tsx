@@ -1,16 +1,16 @@
 import { useEffect, useRef, useState } from "react"
 
 // fetching data
-import DataLoader from "./hooks/DataLoader"
-import ProfileImageUpload from './hooks/ProfileImageUpload'
-import SaveCancel from './hooks/SaveCancel'
+import useData from "../../../hooks/profile/DataLoader"
+import useProfileUpload from '../../../hooks/profile/ProfileImageUpload'
+import useSaveCancel from '../../../hooks/profile/SaveCancel'
 
 // for no profile page users
 import UserImage from './icons/user.jpg'
 // error message
-import Error from "../../alerts and loaders/Error"
+import Error from "../../alerts-loaders/Error"
 //for loading
-import Loader from "../../alerts and loaders/Loader"
+import Loader from "../../alerts-loaders/Loader"
 
 export default function ProfilePopupContent(){
 // edit mode state
@@ -32,7 +32,7 @@ const [isLoading, setIsLoading] = useState(false)
 // getting the data from the loading function
 const handleLoadingData = async () => {
     setIsLoading(true)
-    const res : any = await DataLoader()
+    const res : any = await useData()
 
     setUsername(res.data[0][0]?.username || "");
     setEmail(res.data[1] || "");
@@ -65,7 +65,7 @@ const handleImageClick = () => {
 
 const handleSaving = async() => {
     if(isEditMode === true){
-        const res: any = await SaveCancel({username, firstName, lastName, bio})
+        const res: any = await useSaveCancel({username, firstName, lastName, bio})
 
         if(res && res.error){
             setErrorMessage(res.error)
@@ -89,7 +89,7 @@ const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
 const changeAvatar = async (e:any) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    const url : any = await ProfileImageUpload(file)
+    const url : any = await useProfileUpload(file)
     setAvatarUrl(url);
 
     if(url && url.error){
