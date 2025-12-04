@@ -1,11 +1,25 @@
+import { useState, Activity } from "react"
+
+// popup for adding hustle
+import NewHustlePopup from "./my-hustle-popups/NewHustlePopup"
+
 export default function MyHustlesTopbar(){
+    // show hustle
+    const [showPopup, setShowPopup] = useState<boolean>(false)
+
 return(
     <div className="w-full flex flex-col gap-6">
+        <Activity mode = {showPopup ? 'visible' : 'hidden'}>
+            <NewHustlePopup setShowPopup = {setShowPopup}/>
+        </Activity>
+
         <div className="flex flex-row justify-between items-center">
             <h1 className="text-3xl text-white font-bold tracking-tight">
                 My Hustles
             </h1>
-            <button className="cursor-pointer px-5 py-2.5 bg-amber-700 hover:bg-amber-600 text-white font-medium rounded-xl transition-colors duration-200 flex items-center gap-2 shadow-lg shadow-amber-900/20">
+            <button 
+                onClick = {() => setShowPopup(true)}
+                className="cursor-pointer px-5 py-2.5 bg-amber-700 hover:bg-amber-600 text-white font-medium rounded-xl transition-colors duration-200 flex items-center gap-2 shadow-lg shadow-amber-900/20">
                 <span>+ New Hustle</span>
             </button>
         </div>

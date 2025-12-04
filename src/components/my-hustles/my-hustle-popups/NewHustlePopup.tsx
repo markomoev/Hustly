@@ -1,11 +1,13 @@
-export default function NewHustlePopup() {
+export default function NewHustlePopup({setShowPopup}: any) { 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
             <div className="relative w-full max-w-2xl mx-4 bg-zinc-900 border border-zinc-800 rounded-2xl shadow-2xl">
                 {/* Header */}
                 <div className="flex justify-between items-center px-8 py-6 border-b border-zinc-800">
                     <h2 className="text-2xl font-bold text-white">Create New Hustle</h2>
-                    <button className="text-zinc-400 hover:text-white transition-colors duration-200">
+                    <button
+                        onClick={() => setShowPopup(false)} 
+                        className="text-zinc-400 hover:text-white transition-colors duration-200">
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                         </svg>
@@ -83,6 +85,7 @@ export default function NewHustlePopup() {
                 {/* Footer */}
                 <div className="flex justify-end gap-3 px-8 py-6 border-t border-zinc-800">
                     <button
+                        onClick = {() => setShowPopup(false)}
                         type="button"
                         className="px-6 py-2.5 bg-zinc-800 hover:bg-zinc-700 text-white font-medium rounded-xl border border-zinc-700 transition-colors duration-200"
                     >
