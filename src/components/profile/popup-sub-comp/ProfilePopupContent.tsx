@@ -165,7 +165,7 @@ return(
                         value = {email}
                         onChange = {(e) => setEmail(e.target.value)}
                         readOnly  = {!isEditMode}
-                        type="email" 
+                        type="email"
                         placeholder="Enter email"
                         className="px-4 py-2 bg-zinc-800 text-white rounded-lg border border-zinc-700 focus:outline-none focus:border-amber-700 transition"
                     />
@@ -183,7 +183,7 @@ return(
                 <div className = 'w-full flex flex-row gap-4'>
                     <div className = 'flex flex-col gap-2'>
                         <label className="text-white text-sm font-medium">First name</label>
-                        <input 
+                        <input
                             value = {firstName}
                             onChange={(e) => setFirstName(e.target.value)}
                             readOnly  = {!isEditMode}

@@ -1,4 +1,22 @@
+import { useState } from "react"
+
 export default function NewHustlePopup({setShowPopup}: any) { 
+    // states for all the inputs
+    const [inputs, setInputs] = useState({
+        title: '',
+        description: '',
+        status: 'active',
+        category: '',
+        tags: [] as string[],
+        visibility: 'public',
+        initialProgress: ''
+    })
+
+    // handle the submit for creating a hustle
+    const createHustle = () => {
+        return;
+    }
+    
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
             <div className="relative w-full max-w-2xl mx-4 bg-zinc-900 border border-zinc-800 rounded-2xl shadow-2xl">
@@ -16,11 +34,15 @@ export default function NewHustlePopup({setShowPopup}: any) {
 
                 {/* Form Content */}
                 <div className="px-8 py-6 max-h-[70vh] overflow-y-auto">
-                    <form className="flex flex-col gap-6">
+                    <form 
+                        onSubmit = {(e) => {e.preventDefault; createHustle()}}
+                        className="flex flex-col gap-6">
                         {/* Hustle Title */}
                         <div className="flex flex-col gap-2">
                             <label className="text-white text-sm font-medium">Hustle Title *</label>
                             <input
+                                value = {inputs.title}
+                                onChange = {(e) => setInputs({...inputs, title: e.target.value})}
                                 type="text"
                                 placeholder="Enter hustle title"
                                 className="px-4 py-3 bg-zinc-800 text-white placeholder-zinc-500 rounded-xl border border-zinc-700 focus:outline-none focus:border-amber-700 focus:ring-1 focus:ring-amber-700 transition-all duration-200"
@@ -31,6 +53,8 @@ export default function NewHustlePopup({setShowPopup}: any) {
                         <div className="flex flex-col gap-2">
                             <label className="text-white text-sm font-medium">Description</label>
                             <textarea
+                                value = {inputs.description}
+                                onChange = {(e) => setInputs({...inputs, description: e.target.value})}
                                 placeholder="Describe your hustle..."
                                 rows={4}
                                 className="px-4 py-3 bg-zinc-800 text-white placeholder-zinc-500 rounded-xl border border-zinc-700 focus:outline-none focus:border-amber-700 focus:ring-1 focus:ring-amber-700 transition-all duration-200 resize-none"
@@ -41,7 +65,10 @@ export default function NewHustlePopup({setShowPopup}: any) {
                         <div className="flex gap-4">
                             <div className="flex-1 flex flex-col gap-2">
                                 <label className="text-white text-sm font-medium">Status</label>
-                                <select className="px-4 py-3 bg-zinc-800 text-white rounded-xl border border-zinc-700 focus:outline-none focus:border-amber-700 focus:ring-1 focus:ring-amber-700 transition-all duration-200">
+                                <select 
+                                    value = {inputs.status}
+                                    onChange = {(e) => setInputs({...inputs, status: e.target.value})}
+                                    className="px-4 py-3 bg-zinc-800 text-white rounded-xl border border-zinc-700 focus:outline-none focus:border-amber-700 focus:ring-1 focus:ring-amber-700 transition-all duration-200">
                                     <option value="active">Active</option>
                                     <option value="paused">Paused</option>
                                     <option value="completed">Completed</option>
@@ -51,6 +78,8 @@ export default function NewHustlePopup({setShowPopup}: any) {
                             <div className="flex-1 flex flex-col gap-2">
                                 <label className="text-white text-sm font-medium">Category</label>
                                 <input
+                                    value = {inputs.category}
+                                    onChange = {(e) => setInputs({...inputs, category: e.target.value})}
                                     type="text"
                                     placeholder="e.g., Development"
                                     className="px-4 py-3 bg-zinc-800 text-white placeholder-zinc-500 rounded-xl border border-zinc-700 focus:outline-none focus:border-amber-700 focus:ring-1 focus:ring-amber-700 transition-all duration-200"
@@ -62,6 +91,8 @@ export default function NewHustlePopup({setShowPopup}: any) {
                         <div className="flex flex-col gap-2">
                             <label className="text-white text-sm font-medium">Tags</label>
                             <input
+                                value = {inputs.tags}
+                                onChange = {(e) => setInputs({...inputs, tags: [e.target.value]})}
                                 type="text"
                                 placeholder="React, Node.js, etc. (comma separated)"
                                 className="px-4 py-3 bg-zinc-800 text-white placeholder-zinc-500 rounded-xl border border-zinc-700 focus:outline-none focus:border-amber-700 focus:ring-1 focus:ring-amber-700 transition-all duration-200"
@@ -72,7 +103,11 @@ export default function NewHustlePopup({setShowPopup}: any) {
                         <div className="flex gap-4">
                             <div className="flex-1 flex flex-col gap-2">
                                 <label className="text-white text-sm font-medium">Visibility</label>
-                                <select className="px-4 py-3 bg-zinc-800 text-white rounded-xl border border-zinc-700 focus:outline-none focus:border-amber-700 focus:ring-1 focus:ring-amber-700 transition-all duration-200">
+                                <select 
+                                    value = {inputs.visibility}
+                                    onChange = {(e) => setInputs({...inputs, visibility: e.target.value})}
+                                    className="px-4 py-3 bg-zinc-800 text-white rounded-xl border border-zinc-700 focus:outline-none focus:border-amber-700 focus:ring-1 focus:ring-amber-700 transition-all duration-200">
+                                    
                                     <option value="private">Private</option>
                                     <option value="public">Public</option>
                                 </select>
@@ -81,6 +116,8 @@ export default function NewHustlePopup({setShowPopup}: any) {
                             <div className="flex-1 flex flex-col gap-2">
                                 <label className="text-white text-sm font-medium">Initial Progress (%)</label>
                                 <input
+                                    value = {inputs.initialProgress}
+                                    onChange = {(e) => setInputs({...inputs, initialProgress: e.target.value})}
                                     type="number"
                                     min="0"
                                     max="100"
