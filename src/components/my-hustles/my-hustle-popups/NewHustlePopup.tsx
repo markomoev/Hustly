@@ -68,16 +68,26 @@ export default function NewHustlePopup({setShowPopup}: any) {
                             />
                         </div>
 
-                        {/* Progress */}
-                        <div className="flex flex-col gap-2">
-                            <label className="text-white text-sm font-medium">Initial Progress (%)</label>
-                            <input
-                                type="number"
-                                min="0"
-                                max="100"
-                                placeholder="0"
-                                className="px-4 py-3 bg-zinc-800 text-white placeholder-zinc-500 rounded-xl border border-zinc-700 focus:outline-none focus:border-amber-700 focus:ring-1 focus:ring-amber-700 transition-all duration-200"
-                            />
+                        {/* Visibility and Progress Row */}
+                        <div className="flex gap-4">
+                            <div className="flex-1 flex flex-col gap-2">
+                                <label className="text-white text-sm font-medium">Visibility</label>
+                                <select className="px-4 py-3 bg-zinc-800 text-white rounded-xl border border-zinc-700 focus:outline-none focus:border-amber-700 focus:ring-1 focus:ring-amber-700 transition-all duration-200">
+                                    <option value="private">Private</option>
+                                    <option value="public">Public</option>
+                                </select>
+                            </div>
+
+                            <div className="flex-1 flex flex-col gap-2">
+                                <label className="text-white text-sm font-medium">Initial Progress (%)</label>
+                                <input
+                                    type="number"
+                                    min="0"
+                                    max="100"
+                                    placeholder="0"
+                                    className="px-4 py-3 bg-zinc-800 text-white placeholder-zinc-500 rounded-xl border border-zinc-700 focus:outline-none focus:border-amber-700 focus:ring-1 focus:ring-amber-700 transition-all duration-200"
+                                />
+                            </div>
                         </div>
                     </form>
                 </div>
