@@ -1,5 +1,8 @@
 import { useState } from "react"
 
+// hook for creating a hustle
+import useCreateHuslte from "../../../hooks/my-hustles/useCreateHustle";
+
 export default function NewHustlePopup({setShowPopup}: any) { 
     // states for all the inputs
     const [inputs, setInputs] = useState({
@@ -13,8 +16,9 @@ export default function NewHustlePopup({setShowPopup}: any) {
     })
 
     // handle the submit for creating a hustle
-    const createHustle = () => {
-        return;
+    const handleCreatingHustle = async () => {
+        const result = await useCreateHuslte(inputs);
+        return result;
     }
     
     return (
@@ -33,10 +37,11 @@ export default function NewHustlePopup({setShowPopup}: any) {
                 </div>
 
                 {/* Form Content */}
-                <div className="px-8 py-6 max-h-[70vh] overflow-y-auto">
-                    <form 
-                        onSubmit = {(e) => {e.preventDefault; createHustle()}}
-                        className="flex flex-col gap-6">
+                <form 
+                    onSubmit = {(e) => {e.preventDefault(); handleCreatingHustle()}}
+                    className="flex flex-col h-full">
+                    
+                    <div className="px-8 py-6 max-h-[70vh] overflow-y-auto flex flex-col gap-6">
                         {/* Hustle Title */}
                         <div className="flex flex-col gap-2">
                             <label className="text-white text-sm font-medium">Hustle Title *</label>
@@ -126,25 +131,25 @@ export default function NewHustlePopup({setShowPopup}: any) {
                                 />
                             </div>
                         </div>
-                    </form>
-                </div>
+                    </div>
 
-                {/* Footer */}
-                <div className="flex justify-end gap-3 px-8 py-6 border-t border-zinc-800">
-                    <button
-                        onClick = {() => setShowPopup(false)}
-                        type="button"
-                        className="px-6 py-2.5 bg-zinc-800 hover:bg-zinc-700 text-white font-medium rounded-xl border border-zinc-700 transition-colors duration-200"
-                    >
-                        Cancel
-                    </button>
-                    <button
-                        type="submit"
-                        className="px-6 py-2.5 bg-amber-700 hover:bg-amber-600 text-white font-medium rounded-xl transition-colors duration-200 shadow-lg shadow-amber-900/20"
-                    >
-                        Create Hustle
-                    </button>
-                </div>
+                    {/* Footer */}
+                    <div className="flex justify-end gap-3 px-8 py-6 border-t border-zinc-800">
+                        <button
+                            onClick = {() => setShowPopup(false)}
+                            type="button"
+                            className="px-6 py-2.5 bg-zinc-800 hover:bg-zinc-700 text-white font-medium rounded-xl border border-zinc-700 transition-colors duration-200"
+                        >
+                            Cancel
+                        </button>
+                        <button
+                            type="submit"
+                            className="px-6 py-2.5 bg-amber-700 hover:bg-amber-600 text-white font-medium rounded-xl transition-colors duration-200 shadow-lg shadow-amber-900/20"
+                        >
+                            Create Hustle
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
     )
