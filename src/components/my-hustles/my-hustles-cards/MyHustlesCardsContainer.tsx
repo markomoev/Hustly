@@ -1,5 +1,6 @@
 import MyHustlesCard from "./MyHusltesCard"
 import Error from "../../alerts-loaders/Error"
+import Loader from "../../alerts-loaders/Loader"
 
 import { Activity, useEffect, useState } from "react"
 import useLoadHustle from "../../../hooks/my-hustles/useLoadHustle"
@@ -7,44 +8,66 @@ import useLoadHustle from "../../../hooks/my-hustles/useLoadHustle"
 export default function MyHustlesCardsContainer(){
     // data from the hook
     const {data} = useLoadHustle()
-    
+    // hustle data storage
     const [hustleData, setHustleData] = useState<any>([])
+    // error case
     const [isError, setIsError] = useState<boolean>(false)
     const [errorMessage, setErrorMessage] = useState<string>('')
+    // loading
+    const [isLoading, setIsLoading] = useState<boolean>(false)
 
     useEffect(() => {
         // fetch the data
-        const fetchData = async () => {
-            const result : any = await data()
+        const fetchData = async (showLoading = true) => {
+            try{
+                if(showLoading) setIsLoading(true)
+                const result : any = await data()
 
-            if(result && result.error){
-                setIsError(true)
-                setErrorMessage(result.error)
-                return;
+                if(result.error){
+                    setIsError(true)
+                    setErrorMessage(result.error)
+                    return;
+                }
+                setHustleData(result.data)
             }
-            setHustleData(result)
+            catch(error){
+                setIsError(true)
+                setErrorMessage('An unexpected error occurred')
+            }
+            finally{
+                if(showLoading) setIsLoading(false)
+            }
         }
-        fetchData()
-
+        fetchData(true)
         // update constantly, so we see the latest cards
         const interval = setInterval(() => {
-            fetchData()
+            fetchData(false)
         }, 2000)
         return () => clearInterval(interval)
     },[])
 
     return( 
         <>   
-            <Activity mode = {isError ? 'visible' : 'hidden'}>
-                <Error message = {errorMessage}/>
-            </Activity>   
+            <div className="fixed top-10 left-1/2 transform -translate-x-1/2 z-50">
+                <Activity mode = {isError ? 'visible' : 'hidden'}>
+                    <Error message = {errorMessage}/>
+                </Activity>   
+            </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">            
-                {hustleData.map((hustle : any) => (
-                    <MyHustlesCard 
-                        key = {hustle.id} 
-                        hustle = {hustle}/>
-                ))}
+            <div className="relative min-h-[200px]">
+                <Activity mode={isLoading ? 'visible' : 'hidden'}>
+                    <div className="absolute inset-0 z-10 flex items-center justify-center bg-zinc-950/50 backdrop-blur-sm rounded-xl">
+                        <Loader/>
+                    </div>
+                </Activity>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">            
+                    {hustleData.map((hustle : any) => (
+                        <MyHustlesCard
+                            key = {hustle.id} 
+                            hustle = {hustle}/>
+                    ))}
+                </div>
             </div>
         </>
     )

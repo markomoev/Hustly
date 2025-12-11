@@ -10,11 +10,6 @@ export default function useLoadHustle(){
             const userReturn: any = await useUserId();            
             const userId = userReturn.data[0];
 
-            if(!userId){
-                console.error("No user ID found");
-                return;
-            }
-
             const { data: hustleLoad, error: hustleLoadingError } = await supabase
             .from('hustles')
             .select('*')
