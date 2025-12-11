@@ -8,14 +8,7 @@ export default async function useCreateHuslte(inputs: any) {
         const userResponse: any = await useUserId();
         const userId: any = userResponse.data[0];
 
-        // in case anything is wrong with the user
-            // TODO: get rid of the console error and make and error message
-        if(!userId){
-            console.error('Problem with getting user id!')
-            return;
-        }
-
-
+        // inserting in the db table
         const {data: insertHustle, error: errorInsertingHustle} = await supabase
         .from('hustles')
         .insert({
@@ -29,16 +22,15 @@ export default async function useCreateHuslte(inputs: any) {
             initial_progress: inputs.initialProgress === '' ? 0 : parseInt(inputs.initialProgress),
         })
 
-        // in case of error while inserting data in the hsutles table
+        // in case of error while inserting data in the table
         if(errorInsertingHustle){
-            console.error(errorInsertingHustle.message);
-            return;
+            return {error: "Error while inserting the data", data: null}
         }
 
-        return insertHustle;
+        return {error: null, data: insertHustle}
 
     }
     catch(error){
-        console.error(error)
+        return {error: "An unexpected error occurred!", data: null}
     }
 }

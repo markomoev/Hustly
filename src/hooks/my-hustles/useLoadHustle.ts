@@ -21,15 +21,14 @@ export default function useLoadHustle(){
             .eq("user_id", userId)
 
             if(hustleLoadingError){
-                console.error(hustleLoadingError.message)
-                return
+                return {error: hustleLoadingError.message, data: null}
             }
 
-            return hustleLoad
+            return {error: null,  data: hustleLoad}
         } catch(error){
-            console.error(error)
+            return{error: "An unexpected error occurred", data: null}
         }
     }
 
-    return { loadHustle };
+    return { error: null, data: loadHustle };
 }
