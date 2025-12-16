@@ -1,4 +1,7 @@
 export default function MyHustlesCard({hustle}: any) {
+    // Format date to remove the day of the week (e.g. "Nov 28, 2025")
+    const formattedDate : any = new Date(hustle.created_at).toDateString().split(' ').slice(1).join()
+    
     return (
         <div className="group relative flex flex-col gap-4 p-6 bg-zinc-900/50 border border-zinc-800 hover:border-zinc-700 rounded-2xl transition-all duration-300 hover:shadow-xl hover:shadow-amber-900/5 hover:-translate-y-1 cursor-pointer">
             {/* Header: Title and Status */}
@@ -7,7 +10,7 @@ export default function MyHustlesCard({hustle}: any) {
                     <h3 className="text-xl font-bold text-white group-hover:text-amber-500 transition-colors">  
                         {hustle.title}
                     </h3>
-                    <span className="text-xs text-zinc-500 font-medium">Created on Nov 28, 2025</span>
+                    <span className="text-xs text-zinc-500 font-medium">{formattedDate}</span>
                 </div>
                 <span className="px-3 py-1 text-xs font-medium text-emerald-400 bg-emerald-400/10 border border-emerald-400/20 rounded-full">
                     {hustle.status}
@@ -23,24 +26,29 @@ export default function MyHustlesCard({hustle}: any) {
             <div className="flex flex-col gap-2 mt-2">
                 <div className="flex justify-between items-center text-xs">
                     <span className="text-zinc-400">Progress</span>
-                    <span className="text-white font-medium">{hustle.initialProgress}</span>
+                    <span className="text-white font-medium">{hustle.initialProgress}%</span>
                 </div>
                 <div className="w-full h-2 bg-zinc-800 rounded-full overflow-hidden">
                     <div 
                         className="h-full bg-amber-600 rounded-full" 
-                        style={{ width: '65%' }}
+                        style={{ width: `${hustle.initialProgress}%` }}
                     ></div>
                 </div>
             </div>
 
             {/* Footer: Tags/Meta */}
-            <div className="flex items-center gap-2 mt-2 pt-4 border-t border-zinc-800/50">
-                <span className="px-2.5 py-1 text-xs text-zinc-400 bg-zinc-800 rounded-md">
-                    {hustle.category}
-                </span>
-                <span className="px-2.5 py-1 text-xs text-zinc-400 bg-zinc-800 rounded-md">
-                    {hustle.tags}
-                </span>
+            <div className="flex flex-col gap-2 mt-2 pt-4 border-t border-zinc-800/50">
+                <div className="flex items-center gap-2">
+                    <span className="border border-amber-700 px-2.5 py-1 text-xs text-amber-700 bg-zinc-800 rounded-md">
+                        {hustle.category}
+                    </span>
+                </div>
+                <div className="flex items-center gap-2">
+                    <span  
+                        className={`px-2.5 py-1 text-xs text-zinc-400 bg-zinc-800 rounded-md`}>
+                        {Array.isArray(hustle.tags) ? hustle.tags.join(', ') : hustle.tags}
+                    </span>
+                </div>
             </div>
         </div>
     )
