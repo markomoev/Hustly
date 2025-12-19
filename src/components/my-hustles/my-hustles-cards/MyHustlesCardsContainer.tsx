@@ -5,6 +5,9 @@ import Loader from "../../alerts-loaders/Loader"
 import { Activity, useEffect, useState } from "react"
 import useLoadHustle from "../../../hooks/my-hustles/useLoadHustle"
 
+import {useContext} from "react"
+import { SearchContext } from "../SearchContext"
+
 export default function MyHustlesCardsContainer(){
     // data from the hook
     const {data} = useLoadHustle()
@@ -15,6 +18,8 @@ export default function MyHustlesCardsContainer(){
     const [errorMessage, setErrorMessage] = useState<string>('')
     // loading
     const [isLoading, setIsLoading] = useState<boolean>(false)
+    // searchbar context
+    const {search} : any = useContext(SearchContext)
 
     useEffect(() => {
         // fetch the data
@@ -46,6 +51,22 @@ export default function MyHustlesCardsContainer(){
         return () => clearInterval(interval)
     },[])
 
+    // filtering hustles
+    const filteredData = hustleData.filter((hustle: any) => {
+        if (!search) return true;
+
+        const searchLower = search.toLowerCase();
+
+        // Safely check each field
+        const titleMatch = hustle.title?.toLowerCase().includes(searchLower);
+        const descMatch = hustle.description?.toLowerCase().includes(searchLower);
+        const catMatch = hustle.category?.toLowerCase().includes(searchLower);
+        const tagsMatch = hustle.category?.toLowerCase().includes(searchLower)
+
+        return titleMatch || descMatch || catMatch || tagsMatch;
+    })
+
+
     return( 
         <>   
             <div className="fixed top-10 left-1/2 transform -translate-x-1/2 z-50">
@@ -62,7 +83,7 @@ export default function MyHustlesCardsContainer(){
                 </Activity>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">            
-                    {hustleData.map((hustle : any) => (
+                    {filteredData.map((hustle : any) => (
                         <MyHustlesCard
                             key = {hustle.id} 
                             hustle = {hustle}/>

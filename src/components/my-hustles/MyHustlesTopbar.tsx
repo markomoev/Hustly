@@ -1,11 +1,13 @@
-import { useState, Activity } from "react"
-
+import { useState, Activity, useContext } from "react"
+import { SearchContext } from "./SearchContext"
 // popup for adding hustle
 import NewHustlePopup from "./my-hustle-popups/NewHustlePopup"
 
 export default function MyHustlesTopbar(){
     // show hustle
     const [showPopup, setShowPopup] = useState<boolean>(false)
+    // search bar 
+    const {search, setSearch} : any = useContext(SearchContext)
 
 return(
     <div className="w-full flex flex-col gap-6">
@@ -26,6 +28,8 @@ return(
 
         <div className="w-full relative">
             <input 
+                onChange={(e) => setSearch(e.target.value)}
+                value = {search}
                 type="text" 
                 placeholder="Search hustles..."
                 className="w-full bg-zinc-900/50 border border-zinc-800 text-white placeholder-zinc-500 rounded-xl px-5 py-3 focus:outline-none focus:border-amber-700 focus:ring-1 focus:ring-amber-700 transition-all duration-200"
