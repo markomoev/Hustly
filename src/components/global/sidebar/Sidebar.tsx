@@ -12,7 +12,7 @@ return (
     <div
         onMouseEnter={() => setIsOpen(true)}
         onMouseLeave={() => setIsOpen(false)}
-        className="h-screen shrink-0 flex flex-col shadow-xl transition-all duration-500 bg-[oklch(16.5%_0_0)]"
+        className="h-screen shrink-0 flex flex-col shadow-xl transition-all duration-500 bg-[oklch(16.5%_0_0)] z-50"
         style={{
             width: isOpen ? "14.28%" : "4vw",
             minWidth: isOpen ? "12rem" : "6.5rem"
