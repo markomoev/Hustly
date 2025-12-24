@@ -28,7 +28,7 @@ return(
         <button
             onClick={signOut}
             className={
-                `cursor-pointer whitespace-nowrap w-full px-3.5 py-2.5 bg-zinc-900 text-zinc-300 rounded-full text-md font-medium transition-colors duration-300 hover:border-red-500 border-2 border-transparent focus:outline-none focus:ring-2 focus:ring-red-500 flex items-center gap-3 group
+                `cursor-pointer whitespace-nowrap w-full px-3.5 py-2.5 bg-zinc-900 text-zinc-300 rounded-full text-md font-medium transition-colors duration-300 hover:border-red-500 border border-transparent focus:outline-none focus:ring-2 focus:ring-red-500 flex items-center gap-3 group
                 ${isOpen ? 'items-center' : 'justify-center'}`}   
         >         
             <img src={LogoutIcon} alt="Logout" className="w-5 h-5 transition-transform duration-300 group-hover:rotate-[-20deg] group-hover:scale-125" />
