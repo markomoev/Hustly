@@ -1,3 +1,6 @@
+import { Activity, useState } from 'react';
+import HustlePopup from '../my-hustle-popups/HustlePopup';
+
 import fileIcon from '../icons/file.png'
 
 export default function MyHustlesCard({hustle}: any) {
@@ -11,8 +14,19 @@ export default function MyHustlesCard({hustle}: any) {
             case 'paused': return 'text-zinc-400 bg-zinc-800/50 border border-zinc-700';
             default: return 'text-amber-400 border-amber-400/20 bg-amber-400/10';
         }
-    }       
+    }
+
+    // state for existing individual hustle popup
+    const [activeHustle, setActiveHustle] = useState<boolean>(false)
+    
     return (
+    <>
+        <Activity mode = {activeHustle ? "visible" : "hidden"}>
+            <HustlePopup
+                isActive = {setActiveHustle}
+                hustle = {hustle}/>
+        </Activity>
+
         <div className="group relative flex flex-col gap-4 p-6 bg-zinc-900/50 border border-zinc-800 hover:border-zinc-700 rounded-2xl transition-all duration-300 hover:shadow-xl hover:shadow-amber-900/5 hover:-translate-y-1 cursor-pointer">
             {/* Header: Title and Status */}
             <div className="flex justify-between items-start">
@@ -22,7 +36,7 @@ export default function MyHustlesCard({hustle}: any) {
                     </h3>
                     <span className="text-xs text-zinc-500 font-medium">{formattedDate}</span>
                 </div>
-                <span className={`px-3 py-1 text-xs font-medium border rounded-full ${getStatusColor(hustle.status)}`}>
+                <span className={`px-3 py-1 text-xs font-medium border rounded-full capitalize ${getStatusColor(hustle.status)}`}>
                     {hustle.status}
                 </span>
             </div>
@@ -65,7 +79,8 @@ export default function MyHustlesCard({hustle}: any) {
                     <button 
                         className="cursor-pointer p-1 hover:bg-zinc-800/50 rounded-lg transition-all shrink-0"
                         onClick={(e) => {
-                            e.stopPropagation();
+                            e.preventDefault();
+                            setActiveHustle(true)
                         }}
                     >
                         <img src={fileIcon} alt="File" className="w-5 h-5 opacity-60 hover:opacity-100 transition-opacity"/>
@@ -73,5 +88,6 @@ export default function MyHustlesCard({hustle}: any) {
                 </div>
             </div>
         </div>
+    </>
     )
 }
