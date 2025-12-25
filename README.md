@@ -1,8 +1,13 @@
 # Hustly
 
-![Version](https://img.shields.io/badge/status-Alpha_v0.1.0-orange)
+![Version](https://img.shields.io/badge/status-Alpha_v0.1.1-orange)
 
 Hustly is a modern productivity dashboard designed to help you track, manage, and progress on your personal projects and "hustles". Whether you're building a startup, learning a new skill, or managing freelance work, Hustly provides a clean and intuitive interface to keep everything organized.
+
+## What's New in v0.1.1
+- **Search Functionality**: Real-time filtering of hustles by title.
+- **UI Polish**: Improved Sidebar layout and cleaner Popup designs.
+- **Bug Fixes**: Stabilized tag display logic and status color coding.
 
 ## 🚀 Features
 
@@ -45,10 +50,6 @@ Hustly is a modern productivity dashboard designed to help you track, manage, an
     ```bash
     npm run dev
     ```
-
-## 📸 Screenshots
-
-*(Add screenshots of your dashboard here)*
 
 ## 📄 License
 
