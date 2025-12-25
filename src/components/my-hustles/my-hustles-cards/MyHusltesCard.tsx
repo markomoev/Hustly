@@ -18,7 +18,10 @@ export default function MyHustlesCard({hustle}: any) {
 
     // state for existing individual hustle popup
     const [activeHustle, setActiveHustle] = useState<boolean>(false)
-    
+
+    // dividing the array for the tags
+    const tagsToDisplay : Array<string> = hustle.tags.flatMap((tag: string) => tag.split(' '))
+
     return (
     <>
         <Activity mode = {activeHustle ? "visible" : "hidden"}>
@@ -69,10 +72,15 @@ export default function MyHustlesCard({hustle}: any) {
                 </div>
                 
                 <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                        <span className={`px-2.5 py-1 text-xs text-zinc-400 bg-zinc-800 rounded-md`}>
-                            {hustle.tags}
-                        </span>
+                    <div className="flex items-center gap-2 flex-wrap">
+                        {tagsToDisplay.map((tag: string, index: number) => (
+                            <span
+                                key={index}
+                                className={`px-2.5 py-1 text-xs text-zinc-400 bg-zinc-800 rounded-md`}>
+                                {tag}
+                            </span>
+                        ))
+                        }
                     </div>
 
                     {/* File Icon Button */}
