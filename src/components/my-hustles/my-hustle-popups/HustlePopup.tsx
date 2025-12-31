@@ -1,7 +1,11 @@
 import editIcon from '../icons/hustle-popup/edit.svg'
 import closeIcon from '../icons/hustle-popup/close.svg'
+import { useState, Activity } from 'react'
 
 export default function HustlePopup({isActive, hustle} : any) {
+    // edit mode
+    const [isEditMode, setIsEditMode] = useState<boolean>(false)
+    
     // Format date to remove the day of the week 
     const formattedDate : any = new Date(hustle.created_at).toDateString().split(' ').slice(1).join().replace(",", " ")
 
@@ -88,10 +92,32 @@ export default function HustlePopup({isActive, hustle} : any) {
 
                     {/* Footer / Actions */}
                     <div className="pt-6 mt-2 border-t border-zinc-800 flex justify-end gap-3">
-                        <button className="cursor-pointer group flex items-center gap-2 px-4 py-2 text-sm font-medium text-zinc-400 bg-zinc-800/50 hover:bg-zinc-800 hover:text-white border border-zinc-700/50 hover:border-zinc-600 rounded-xl transition-all duration-200">
-                            <img src={editIcon} alt="Edit Icon" className=''/>
-                            Edit Details
-                        </button>
+                        <Activity mode={isEditMode ? "visible" : "hidden"}>
+                            <div className="w-full flex items-center justify-between">
+                                <button className="cursor-pointer px-4 py-2 text-sm font-medium text-red-400 hover:text-red-300 hover:bg-red-400/10 rounded-xl transition-colors">
+                                    Delete
+                                </button>
+                                <div className="flex items-center gap-3">
+                                    <button 
+                                        onClick={() => setIsEditMode(false)}
+                                        className="cursor-pointer px-4 py-2 text-sm font-medium text-zinc-400 hover:text-white hover:bg-zinc-800 rounded-xl transition-colors">
+                                        Cancel
+                                    </button>
+                                    <button className="cursor-pointer px-4 py-2 text-sm font-medium text-zinc-900 bg-amber-500 hover:bg-amber-400 rounded-xl transition-colors shadow-lg shadow-amber-500/20">
+                                        Save
+                                    </button>
+                                </div>
+                            </div>
+                        </Activity>
+                        
+                        <Activity mode={!isEditMode ? "visible" : "hidden"}>
+                            <button
+                                onClick={() => setIsEditMode(true)} 
+                                className="cursor-pointer group flex items-center gap-2 px-4 py-2 text-sm font-medium text-zinc-400 bg-zinc-800/50 hover:bg-zinc-800 hover:text-white border border-zinc-700/50 hover:border-zinc-600 rounded-xl transition-all duration-200">
+                                <img src={editIcon} alt="Edit Icon" className=''/>
+                                Edit Details
+                            </button>
+                        </Activity>
                     </div>
 
                 </div>
