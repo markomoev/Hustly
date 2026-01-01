@@ -18,7 +18,7 @@ export default function useLoadHustle(){
             if(hustleLoadingError){
                 return {error: hustleLoadingError.message, data: null}
             }
-
+            
             return {error: null,  data: hustleLoad}
         } catch(error){
             return{error: "An unexpected error occurred", data: null}

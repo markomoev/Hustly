@@ -1,12 +1,15 @@
 import editIcon from '../icons/hustle-popup/edit.svg'
 import closeIcon from '../icons/hustle-popup/close.svg'
+
 import { useState, Activity } from 'react'
+
+import useDeleteHustle from '../../../hooks/my-hustles/useDeleteHustle'
 
 export default function HustlePopup({isActive, hustle} : any) {
     // edit mode
     const [isEditMode, setIsEditMode] = useState<boolean>(false)
     
-    // Format date to remove the day of the week 
+    // format date to remove the day of the week 
     const formattedDate : any = new Date(hustle.created_at).toDateString().split(' ').slice(1).join().replace(",", " ")
 
     // get the color for specific status
@@ -16,6 +19,11 @@ export default function HustlePopup({isActive, hustle} : any) {
             case 'paused': return 'text-zinc-400 bg-zinc-800/50 border border-zinc-700';
             default: return 'text-amber-400 border-amber-400/20 bg-amber-400/10';
         }
+    }
+
+    const handleDeleteHustle = async() => {
+        const response : any = await useDeleteHustle(hustle.id)
+        return {error: null, data: response}
     }
     
     return (
@@ -94,7 +102,9 @@ export default function HustlePopup({isActive, hustle} : any) {
                     <div className="pt-6 mt-2 border-t border-zinc-800 flex justify-end gap-3">
                         <Activity mode={isEditMode ? "visible" : "hidden"}>
                             <div className="w-full flex items-center justify-between">
-                                <button className="cursor-pointer px-4 py-2 text-sm font-medium text-red-400 hover:text-red-300 hover:bg-red-400/10 rounded-xl transition-colors">
+                                <button 
+                                    onClick = {() =>  handleDeleteHustle()}
+                                    className="cursor-pointer px-4 py-2 text-sm font-medium text-red-400 hover:text-red-300 hover:bg-red-400/10 rounded-xl transition-colors">
                                     Delete
                                 </button>
                                 <div className="flex items-center gap-3">

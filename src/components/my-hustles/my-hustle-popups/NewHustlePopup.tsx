@@ -18,6 +18,7 @@ export default function NewHustlePopup({setShowPopup}: any) {
     // handle the submit for creating a hustle
     const handleCreatingHustle = async () => {
         const result = await useCreateHuslte(inputs);
+        setShowPopup(false)
         return result;
     }
     
