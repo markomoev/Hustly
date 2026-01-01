@@ -1,7 +1,7 @@
-import {supabase} from '../../client'
+import {supabase} from '../../../client'
 
 // import the user id
-import { useUserId } from '../global/UserId'
+import { useUserId } from '../../global/UserId'
 
 export default async function useDeleteHustle(hustleId: any) {
     try{
