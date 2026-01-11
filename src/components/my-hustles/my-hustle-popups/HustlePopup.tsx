@@ -4,14 +4,24 @@ import closeIcon from '../icons/hustle-popup/close.svg'
 import { useState, Activity } from 'react'
 
 import useDeleteHustle from '../../../hooks/my-hustles/my-hustles-edit/useDeleteHustle'
+import useUpdateHustle from '../../../hooks/my-hustles/my-hustles-edit/useUpdateHustle'
 
 export default function HustlePopup({isActive, hustle} : any) {
+    // states for all the inputs
+    const [inputs, setInputs] = useState({
+        title: hustle.title,
+        description: hustle.description,
+        status: hustle.status,
+        category: hustle.category,
+        tags: Array.isArray(hustle.tags) ? hustle.tags.join(' ') : hustle.tags,
+        visibility: 'public',
+        initialProgress: hustle.initial_progress
+    })
+    
     // edit mode
     const [isEditMode, setIsEditMode] = useState<boolean>(false)
-    
     // format date to remove the day of the week 
     const formattedDate : any = new Date(hustle.created_at).toDateString().split(' ').slice(1).join().replace(",", " ")
-
     // get the color for specific status
     const getStatusColor = (status: string) => {
         switch(status){
@@ -21,10 +31,17 @@ export default function HustlePopup({isActive, hustle} : any) {
         }
     }
 
+    // handles
     const handleDeleteHustle = async() => {
         const response : any = await useDeleteHustle(hustle.id)
         return {error: null, data: response}
     }
+
+    const handleUpdateHustle = async () => {
+        const response : any = await useUpdateHustle(hustle.id, inputs)
+        return {error: null, data: response}
+    }
+
     
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
@@ -36,7 +53,8 @@ export default function HustlePopup({isActive, hustle} : any) {
                         <Activity mode={isEditMode ? "visible" : "hidden"}>
                             <input 
                                 type="text"
-                                defaultValue={hustle.title}
+                                value={inputs.title}
+                                onChange={(e) => setInputs({...inputs, title: e.target.value})}
                                 className="text-2xl font-bold text-white bg-transparent border-0 border-b border-zinc-800 focus:border-amber-500 focus:ring-0 px-0 py-1 w-full transition-colors placeholder:text-zinc-800 focus:outline-none"
                                 placeholder="Hustle Title"
                             />
@@ -67,7 +85,8 @@ export default function HustlePopup({isActive, hustle} : any) {
                             <span className="text-zinc-400 text-sm">Status:</span>
                             <Activity mode={isEditMode ? "visible" : "hidden"}>
                                 <select 
-                                    defaultValue={hustle.status}
+                                    value={inputs.status}
+                                    onChange={(e) => setInputs({...inputs, status: e.target.value})}
                                     className="px-3 py-1 text-xs font-medium rounded-full bg-zinc-800 text-white border border-zinc-700 focus:outline-none focus:border-amber-500">
                                     <option value="active">Active</option>
                                     <option value="paused">Paused</option>
@@ -86,7 +105,8 @@ export default function HustlePopup({isActive, hustle} : any) {
                             <Activity mode={isEditMode ? "visible" : "hidden"}>
                                 <input 
                                     type="text"
-                                    defaultValue={hustle.category}
+                                    value={inputs.category}
+                                    onChange={(e) => setInputs({...inputs, category: e.target.value})}
                                     className="text-sm font-medium bg-zinc-800 text-white border border-zinc-700 rounded px-2 py-0.5 focus:outline-none focus:border-amber-500 w-32"
                                 />
                             </Activity>
@@ -101,7 +121,8 @@ export default function HustlePopup({isActive, hustle} : any) {
                         <h3 className="text-sm font-medium tracking-wider text-zinc-500">Description</h3>
                         <Activity mode={isEditMode ? "visible" : "hidden"}>
                             <textarea 
-                                defaultValue={hustle.description}
+                                value={inputs.description}
+                                onChange={(e) => setInputs({...inputs, description: e.target.value})}
                                 rows={4}
                                 className="text-zinc-300 leading-relaxed bg-zinc-800 border border-zinc-700 rounded-lg p-3 focus:outline-none focus:border-amber-500 w-full resize-none"
                             />
@@ -123,7 +144,8 @@ export default function HustlePopup({isActive, hustle} : any) {
                                         type="number" 
                                         min="0" 
                                         max="100"
-                                        defaultValue={hustle.initial_progress}
+                                        value={inputs.initialProgress}
+                                        onChange={(e) => setInputs({...inputs, initialProgress: e.target.value})}
                                         className="w-16 bg-zinc-800 border border-zinc-700 rounded px-2 py-1 text-white text-right focus:outline-none focus:border-amber-500 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                                     />
                                     <span className="text-zinc-400">%</span>
@@ -147,7 +169,8 @@ export default function HustlePopup({isActive, hustle} : any) {
                         <Activity mode={isEditMode ? "visible" : "hidden"}>
                             <input 
                                 type="text"
-                                defaultValue={hustle.tags}
+                                value={inputs.tags}
+                                onChange={(e) => setInputs({...inputs, tags: e.target.value})}
                                 className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-zinc-300 focus:outline-none focus:border-amber-500"
                                 placeholder="Separate tags with spaces"
                             />
@@ -179,6 +202,7 @@ export default function HustlePopup({isActive, hustle} : any) {
                                         Cancel
                                     </button>
                                     <button 
+                                        onClick={() => handleUpdateHustle()}
                                         type="submit"
                                         className="cursor-pointer px-4 py-2 text-sm font-medium text-zinc-900 bg-amber-500 hover:bg-amber-400 rounded-xl transition-colors shadow-lg shadow-amber-500/20">
                                         Save
