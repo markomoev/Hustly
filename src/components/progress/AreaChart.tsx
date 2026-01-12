@@ -44,7 +44,7 @@ export function ChartAreaInteractive() {
   const { data: chartData } = useProgressData(timeRange)
 
   return (
-    <Card className="pt-0 bg-[oklch(16.5%_0_0)]">
+    <Card className="pt-0 bg-[oklch(16.5%_0_0)] h-full flex flex-col justify-center">
       <CardHeader className="flex items-center gap-2 space-y-0 border-b-0 py-5 sm:flex-row">
         <div className="grid flex-1 gap-1">
           <CardTitle>Hustles growth</CardTitle>
@@ -75,7 +75,7 @@ export function ChartAreaInteractive() {
       <CardContent className="px-2 pt-4 sm:px-6 sm:pt-6">
         <ChartContainer
           config={chartConfig}
-          className="aspect-auto h-[180px] w-full"
+          className="aspect-auto h-40 w-full"
         >
           <AreaChart data={chartData}>
             <defs>

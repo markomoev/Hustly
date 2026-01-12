@@ -15,11 +15,11 @@ export function useProgressData(timeRange: string) {
         async function loadData() {
             setIsLoading(true)
             
-            // 1. Get User
+            // Get User
             const { data: userData } = await useUserId()
             if (!userData?.[0]) return setIsLoading(false)
 
-            // 2. Fetch all hustles
+            // Fetch all hustles
             const { data: hustles } = await supabase
                 .from('hustles')
                 .select('created_at')
@@ -31,11 +31,11 @@ export function useProgressData(timeRange: string) {
             const counts: Record<string, number> = {}
             
             hustles.forEach(h => {
-                const date = h.created_at.split('T')[0] // YYYY-MM-DD
+                const date = h.created_at.split('T')[0]
                 counts[date] = (counts[date] || 0) + 1
             })
 
-            // 4. Filter by ID range
+            // Filter by ID range
             const now = new Date()
             const days = timeRange === '30d' ? 30 : timeRange === '7d' ? 7 : 90
             now.setDate(now.getDate() - days)

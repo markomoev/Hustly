@@ -3,7 +3,7 @@ import Topbar from "../../components/global/topbar/Topbar"
 
 //charts
 import { ChartAreaInteractive as AreaChart } from "../../components/progress/AreaChart"
-
+import { ChartPieInteractive as PieChart } from "../../components/progress/PieChart"
 
 export default function ProgressPage(){
   return(
@@ -13,9 +13,18 @@ export default function ProgressPage(){
       <div className="flex flex-col h-screen w-14/15"> 
         <Topbar />
 
-        <div className="flex items-center justify-center md:mt-2 w-full px-8">
-            <div className="w-full max-w-7xl">
+                <div className="flex flex-col gap-4 items-center justify-center md:mt-2 w-full px-8 pb-4 h-full">
+            <div className="w-full max-w-8xl flex-1 min-h-0">
                 <AreaChart/>
+            </div>
+
+            <div className="w-full flex-1 min-h-0 flex gap-4">
+              <div className="w-1/2 h-full">
+                <PieChart/>
+              </div>
+              <div className="w-1/2 h-full">
+                {/* Future Chart */}
+              </div>
             </div>
         </div>
       </div>
