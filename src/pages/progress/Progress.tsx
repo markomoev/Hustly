@@ -4,6 +4,7 @@ import Topbar from "../../components/global/topbar/Topbar"
 //charts
 import { ChartAreaInteractive as AreaChart } from "../../components/progress/AreaChart"
 import { ChartPieInteractive as PieChart } from "../../components/progress/PieChart"
+import { ChartRadialStacked as RadialChart } from "../../components/progress/RadialChart"
 
 export default function ProgressPage(){
   return(
@@ -23,7 +24,7 @@ export default function ProgressPage(){
                 <PieChart/>
               </div>
               <div className="w-1/2 h-full">
-                {/* Future Chart */}
+                <RadialChart />
               </div>
             </div>
         </div>
