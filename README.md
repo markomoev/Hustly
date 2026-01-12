@@ -1,10 +1,15 @@
 # Hustly
 
-![Version](https://img.shields.io/badge/status-Alpha_v0.1.3-orange)
+![Version](https://img.shields.io/badge/status-Alpha_v0.1.4-orange)
 
 Hustly is a modern productivity dashboard designed to help you track, manage, and progress on your personal projects and "hustles". Whether you're building a startup, learning a new skill, or managing freelance work, Hustly provides a clean and intuitive interface to keep everything organized.
 
-## 🆕 What's New in v0.1.3
+## 🆕 What's New in v0.1.4
+- **Pie Chart Integration**: Added a breakdown of hustles by month on the Progress page.
+- **Improved Type Safety**: Resolved TypeScript errors in chart components for better stability.
+- **Layout Optimization**: Tweaked progress dashboard layout for better screen real estate usage.
+
+### Previous Updates (v0.1.3)
 - **Progress Visualization**: Added interactive Area Charts to the Progress page to visualize hustle activity over time.
 - **Real-time Data Integration**: Charts are now connected to live Supabase data, showing daily hustle counts.
 - **UI Improvements**: Polished chart styling with card layouts and optimized height for better dashboard density.
