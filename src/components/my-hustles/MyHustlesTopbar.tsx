@@ -3,6 +3,8 @@ import { SearchContext } from "./SearchContext"
 // popup for adding hustle
 import NewHustlePopup from "./my-hustle-popups/NewHustlePopup"
 
+import {Plus} from "lucide-react"
+
 export default function MyHustlesTopbar(){
     // show hustle
     const [showPopup, setShowPopup] = useState<boolean>(false)
@@ -22,7 +24,8 @@ return(
             <button 
                 onClick = {() => setShowPopup(true)}
                 className="cursor-pointer px-5 py-2.5 bg-amber-700 hover:bg-amber-600 text-white font-medium rounded-xl transition-colors duration-200 flex items-center gap-2 shadow-lg shadow-amber-900/20">
-                <span>Add Hustle</span>
+                <Plus className = "w-4 h-4"/>
+                Add Hustle
             </button>
         </div>
 

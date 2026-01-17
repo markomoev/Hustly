@@ -1,13 +1,12 @@
-import { Activity, useState } from 'react';
+import { Activity, useEffect, useState } from 'react';
 import HustlePopup from '../my-hustle-popups/HustlePopup';
 
-import fileIcon from '../icons/file.png'
+import {PackageOpen, GitCommit} from "lucide-react"
+import useLoadMilestone from '@/hooks/my-hustles/my-hustle-load/useLoadMilestone';
 
 export default function MyHustlesCard({hustle}: any) {
-    // Format date to remove the day of the week 
+    // format date and get specific color
     const formattedDate : any = new Date(hustle.created_at).toDateString().split(' ').slice(1).join().replace(",", " ")
-
-    // get the color for specific status
     const getStatusColor = (status: string) => {
         switch(status){
             case 'completed': return 'text-emerald-400 border-emerald-400/20 bg-emerald-400/10';
@@ -18,9 +17,22 @@ export default function MyHustlesCard({hustle}: any) {
 
     // state for existing individual hustle popup
     const [activeHustle, setActiveHustle] = useState<boolean>(false)
-
     // dividing the array for the tags
     const tagsToDisplay : Array<string> = hustle.tags.flatMap((tag: string) => tag.split(' '))
+
+    // last milestone info
+    const [milestone, setMilestone] = useState<any>(null)
+
+    useEffect(() => {
+        const load = async() => {
+            const response : any = await useLoadMilestone(hustle.id)
+
+            if (response && !response.error && response.data && response.data.length > 0){
+                setMilestone(response.data[response.data.length - 1]) 
+            }
+        }
+        load()
+    }, [hustle.id])
 
     return (
     <>
@@ -63,6 +75,28 @@ export default function MyHustlesCard({hustle}: any) {
                 </div>
             </div>
 
+            {/* Last Milestone */}
+            {milestone && (
+               <div className="mt-4 pt-4 border-t border-zinc-800/50">
+                   <div className="flex items-center gap-2 mb-2">
+                       <span className="text-[10px] uppercase tracking-wider font-semibold text-zinc-500">Latest Update</span>
+                   </div>
+                   <div className="relative pl-6 border-l border-zinc-800 ml-1">
+                        <div className="absolute -left-[9px] top-0.5 bg-zinc-900 rounded-full border border-zinc-700 p-1 text-zinc-500 group-hover:border-amber-500 group-hover:text-amber-500 transition-colors shadow-sm">
+                            <GitCommit size={10} />
+                        </div>
+                        <div className="flex flex-col">
+                             <p className="text-sm text-zinc-300 font-medium leading-tight group-hover:text-amber-400 transition-colors line-clamp-1">
+                                {milestone.title}
+                            </p>
+                            <span className="text-[10px] text-zinc-600 font-mono mt-0.5">
+                                {new Date(milestone.created_at).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
+                            </span>
+                        </div>
+                   </div>
+               </div>
+            )}
+
             {/* Footer: Tags/Meta */}
             <div className="flex flex-col gap-2 mt-2 pt-4 border-t border-zinc-800/50">
                 <div className="flex items-center gap-2">
@@ -83,7 +117,7 @@ export default function MyHustlesCard({hustle}: any) {
                         }
                     </div>
 
-                    {/* File Icon Button */}
+                    {/* Open Hustle Popup Button */}
                     <button 
                         className="cursor-pointer p-1 hover:bg-zinc-800/50 rounded-lg transition-all shrink-0"
                         onClick={(e) => {
@@ -91,7 +125,8 @@ export default function MyHustlesCard({hustle}: any) {
                             setActiveHustle(true)
                         }}
                     >
-                        <img src={fileIcon} alt="File" className="w-5 h-5 opacity-60 hover:opacity-100 transition-opacity"/>
+                        <PackageOpen
+                            className="w-5 h-5 opacity-60 hover:opacity-100 transition-opacity"/>
                     </button>
                 </div>
             </div>

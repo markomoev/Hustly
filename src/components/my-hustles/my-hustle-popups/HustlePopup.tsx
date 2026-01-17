@@ -2,7 +2,7 @@ import editIcon from '../icons/hustle-popup/edit.svg'
 import closeIcon from '../icons/hustle-popup/close.svg'
 
 import { useEffect, useState, Activity } from 'react'
-import { Plus, X } from 'lucide-react'
+import { Plus, X, GitCommit } from 'lucide-react'
 
 import useDeleteHustle from '../../../hooks/my-hustles/my-hustles-edit/useDeleteHustle'
 import useUpdateHustle from '../../../hooks/my-hustles/my-hustles-edit/useUpdateHustle'
@@ -52,9 +52,7 @@ export default function HustlePopup({isActive, hustle} : any) {
     }
 
     const handleCreateMilestone = async () => {
-        console.log("Creating milestone...", {hustleId: hustle.id, input: milestoneInput})
         const response : any = await useCreateMilestone(hustle.id, milestoneInput)
-        console.log("Create response:", response)
         
         if (response && !response.error) {
              setMilestoneInput("")
@@ -251,19 +249,26 @@ export default function HustlePopup({isActive, hustle} : any) {
                                 {milestones.length === 0 && (
                                     <p className="text-zinc-500 text-sm italic px-2">No milestones yet.</p>
                                 )}
-                                {milestones.map((ms: any) => (
-                                    <div key={ms.id} className="group relative flex items-start gap-3 p-3 rounded-xl bg-zinc-800/30 border border-zinc-800 hover:border-zinc-700/50 transition-all">
-                                        <div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.5)] shrink-0"></div>
-                                        <div className="flex-1 min-w-0">
-                                            <p className="text-sm text-zinc-300 wrap-break-words leading-relaxed">
-                                                {ms.title}
-                                            </p>
-                                            <span className="text-[10px] text-zinc-600 font-medium">
-                                                {new Date(ms.created_at).toLocaleDateString()}
-                                            </span>
+                                <div className="relative ml-2 border-l border-zinc-800 space-y-5 pb-2 pt-1">
+                                    {milestones.map((ms: any) => (
+                                        <div key={ms.id} className="group relative pl-6">
+                                            {/* Timeline Node */}
+                                            <div className="absolute -left-[9px] top-0.5 bg-zinc-900 rounded-full border border-zinc-700 p-1 text-zinc-500 group-hover:border-amber-500 group-hover:text-amber-500 transition-colors shadow-sm">
+                                                <GitCommit size={10} />
+                                            </div>
+                                            
+                                            {/* Content */}
+                                            <div className="flex flex-col">
+                                                <p className="text-sm text-zinc-300 font-medium leading-tight group-hover:text-amber-400 transition-colors">
+                                                    {ms.title}
+                                                </p>
+                                                <span className="text-[10px] text-zinc-600 font-mono mt-0.5">
+                                                    {new Date(ms.created_at).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
+                                                </span>
+                                            </div>
                                         </div>
-                                    </div>
-                                ))}
+                                    ))}
+                                </div>
                             </div>
                         </Activity>
                     </div>
