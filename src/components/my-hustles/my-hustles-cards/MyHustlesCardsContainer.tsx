@@ -3,7 +3,7 @@ import Error from "../../alerts-loaders/Error"
 import Loader from "../../alerts-loaders/Loader"
 
 import { Activity, useEffect, useState } from "react"
-import useLoadHustle from "../../../hooks/my-hustles/useLoadHustle"
+import useLoadHustle from "../../../hooks/my-hustles/my-hustle-load/useLoadHustle"
 
 import {useContext} from "react"
 import { SearchContext } from "../SearchContext"

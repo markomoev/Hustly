@@ -1,8 +1,7 @@
-import {supabase} from "../../client"
+import {supabase} from "../../../client"
 
 export default async function useCreateMilestone(hustle_id: number, input: string){
     try{
-
         // inserting in the db table
         const {data: insertMilestone, error: errorInsertingMilestone} = await supabase
         .from('milestones')
@@ -11,13 +10,15 @@ export default async function useCreateMilestone(hustle_id: number, input: strin
             title: input,
             status: "done"
         })
+        .select()
 
-        if (errorInsertingMilestone)
-            console.error(errorInsertingMilestone.message)
+        if (errorInsertingMilestone){
+            return{data: null, error: "Error while inserting data"}
+        }
 
-        console.log(insertMilestone)
+        return {data: insertMilestone, error: null}
     }
     catch(error){
-        console.error(error)
+        return{data: null, error: "An unexpected error occurred"}
     }
 }

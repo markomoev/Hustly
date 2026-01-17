@@ -1,15 +1,17 @@
 import editIcon from '../icons/hustle-popup/edit.svg'
 import closeIcon from '../icons/hustle-popup/close.svg'
 
-import { useState, Activity } from 'react'
+import { useEffect, useState, Activity } from 'react'
 import { Plus, X } from 'lucide-react'
 
 import useDeleteHustle from '../../../hooks/my-hustles/my-hustles-edit/useDeleteHustle'
 import useUpdateHustle from '../../../hooks/my-hustles/my-hustles-edit/useUpdateHustle'
-import useCreateMilestone from '@/hooks/my-hustles/useCreateMilestone'
+import useCreateMilestone from '@/hooks/my-hustles/my-hustle-create/useCreateMilestone'
+import useLoadMilestone from '@/hooks/my-hustles/my-hustle-load/useLoadMilestone'
+
 
 export default function HustlePopup({isActive, hustle} : any) {
-    // states for all the hustle inputs
+    // states for all the hustle and milestone inputs
     const [hustleInputs, setHustleInputs] = useState({
         title: hustle.title,
         description: hustle.description,
@@ -19,9 +21,8 @@ export default function HustlePopup({isActive, hustle} : any) {
         visibility: 'public',
         initialProgress: hustle.initial_progress
     })
-    
     const [milestoneInput, setMilestoneInput] = useState<string>("")
-
+    const [milestones, setMilestones] = useState<any[]>([])
 
     // modes
     const [isEditMode, setIsEditMode] = useState<boolean>(false)
@@ -51,11 +52,37 @@ export default function HustlePopup({isActive, hustle} : any) {
     }
 
     const handleCreateMilestone = async () => {
+        console.log("Creating milestone...", {hustleId: hustle.id, input: milestoneInput})
         const response : any = await useCreateMilestone(hustle.id, milestoneInput)
-        console.log("Milestone handled!", response)
+        console.log("Create response:", response)
+        
+        if (response && !response.error) {
+             setMilestoneInput("")
+             setAddMilestone(false)
+             // Reload milestones after create
+             const loaded : any = await useLoadMilestone(hustle.id)
+             if(loaded && !loaded.error) setMilestones(loaded.data || [])
+        } 
+        else{
+            return{data: null, error: "Error creating a milestone!"}
+        }
     }
 
+    // Load milestones on mount
+    useEffect(() => {
+        const load = async () => {
+            const response : any = await useLoadMilestone(hustle.id)
+            if (response && !response.error) {
+                setMilestones(response.data || [])
+            } else {
+                return{data: null, error: response.error}
+            }
+        }
+        load()
+    }, [hustle.id])
     
+    
+      
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
             <div className="relative w-full max-w-2xl mx-4 bg-zinc-900 border border-zinc-800 rounded-2xl shadow-2xl">
@@ -211,6 +238,36 @@ export default function HustlePopup({isActive, hustle} : any) {
                             </div>
                         </div>
                     </div>
+
+                    {/* Milestones Container */}
+                    <div className="flex flex-col gap-3">
+                        <Activity mode={!isEditMode ? "visible" : "hidden"}>
+                            <div className="flex items-center justify-between">
+                                <h3 className="text-sm font-medium tracking-wider text-zinc-500">Milestones</h3>
+                            </div>
+                            
+                            {/* Milestone Item Structure - Repeated for each milestone */}
+                            <div className="flex flex-col gap-2">
+                                {milestones.length === 0 && (
+                                    <p className="text-zinc-500 text-sm italic px-2">No milestones yet.</p>
+                                )}
+                                {milestones.map((ms: any) => (
+                                    <div key={ms.id} className="group relative flex items-start gap-3 p-3 rounded-xl bg-zinc-800/30 border border-zinc-800 hover:border-zinc-700/50 transition-all">
+                                        <div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.5)] shrink-0"></div>
+                                        <div className="flex-1 min-w-0">
+                                            <p className="text-sm text-zinc-300 wrap-break-words leading-relaxed">
+                                                {ms.title}
+                                            </p>
+                                            <span className="text-[10px] text-zinc-600 font-medium">
+                                                {new Date(ms.created_at).toLocaleDateString()}
+                                            </span>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </Activity>
+                    </div>
+
                     {/* Tags */}
                     <div className="flex flex-col gap-3">
                         <h3 className="text-sm font-medium tracking-wider text-zinc-500">Tags</h3>

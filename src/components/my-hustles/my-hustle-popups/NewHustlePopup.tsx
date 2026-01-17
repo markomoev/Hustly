@@ -1,7 +1,7 @@
 import { useState } from "react"
 
 // hook for creating a hustle
-import useCreateHuslte from "../../../hooks/my-hustles/useCreateHustle";
+import useCreateHuslte from "../../../hooks/my-hustles/my-hustle-create/useCreateHustle";
 
 export default function NewHustlePopup({setShowPopup}: any) { 
     // states for all the inputs

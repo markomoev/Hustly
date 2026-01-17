@@ -1,7 +1,7 @@
-import {supabase} from "../../client"
+import {supabase} from "../../../client"
 
 //user id
-import {useUserId} from "../global/UserId"
+import {useUserId} from "../../global/UserId"
 
 export default function useLoadHustle(){
     

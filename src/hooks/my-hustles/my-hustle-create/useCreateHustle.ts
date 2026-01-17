@@ -1,7 +1,7 @@
-import {supabase} from "../../client"
+import {supabase} from "../../../client"
 
 // user id import
-import { useUserId } from "../global/UserId"
+import { useUserId } from "../../global/UserId"
 
 export default async function useCreateHuslte(inputs: any) {
     try{
