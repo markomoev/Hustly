@@ -8,6 +8,7 @@ import useDeleteHustle from '../../../hooks/my-hustles/my-hustles-edit/useDelete
 import useUpdateHustle from '../../../hooks/my-hustles/my-hustles-edit/useUpdateHustle'
 import useCreateMilestone from '@/hooks/my-hustles/my-hustle-create/useCreateMilestone'
 import useLoadMilestone from '@/hooks/my-hustles/my-hustle-load/useLoadMilestone'
+import useUpdateMilestone from '@/hooks/my-hustles/my-hustles-edit/useUpdateMilestone'
 
 
 export default function HustlePopup({isActive, hustle} : any) {
@@ -47,8 +48,16 @@ export default function HustlePopup({isActive, hustle} : any) {
     }
 
     const handleUpdateHustle = async () => {
-        const response : any = await useUpdateHustle(hustle.id, hustleInputs)
-        return {error: null, data: response}
+        const response : any = await useUpdateHustle(hustle.id, hustleInputs)  
+        
+        // Update milestones
+        const milestonesResponse : any = await useUpdateMilestone(milestones)      
+        if (milestonesResponse.error) {
+            return {data: null, error: milestonesResponse.error}
+        }
+
+        setIsEditMode(false)
+        return {error: null, data: {hustle: response, milestones: milestonesResponse}}
     }
 
     const handleCreateMilestone = async () => {
@@ -57,7 +66,7 @@ export default function HustlePopup({isActive, hustle} : any) {
         if (response && !response.error) {
              setMilestoneInput("")
              setAddMilestone(false)
-             // Reload milestones after create
+             // reload milestones after create
              const loaded : any = await useLoadMilestone(hustle.id)
              if(loaded && !loaded.error) setMilestones(loaded.data || [])
         } 
@@ -66,7 +75,7 @@ export default function HustlePopup({isActive, hustle} : any) {
         }
     }
 
-    // Load milestones on mount
+    // load milestones on mount
     useEffect(() => {
         const load = async () => {
             const response : any = await useLoadMilestone(hustle.id)
@@ -239,38 +248,51 @@ export default function HustlePopup({isActive, hustle} : any) {
 
                     {/* Milestones Container */}
                     <div className="flex flex-col gap-3">
-                        <Activity mode={!isEditMode ? "visible" : "hidden"}>
-                            <div className="flex items-center justify-between">
-                                <h3 className="text-sm font-medium tracking-wider text-zinc-500">Milestones</h3>
-                            </div>
-                            
-                            {/* Milestone Item Structure - Repeated for each milestone */}
-                            <div className="flex flex-col gap-2">
-                                {milestones.length === 0 && (
-                                    <p className="text-zinc-500 text-sm italic px-2">No milestones yet.</p>
-                                )}
-                                <div className="relative ml-2 border-l border-zinc-800 space-y-5 pb-2 pt-1">
-                                    {milestones.map((ms: any) => (
-                                        <div key={ms.id} className="group relative pl-6">
-                                            {/* Timeline Node */}
-                                            <div className="absolute -left-[9px] top-0.5 bg-zinc-900 rounded-full border border-zinc-700 p-1 text-zinc-500 group-hover:border-amber-500 group-hover:text-amber-500 transition-colors shadow-sm">
-                                                <GitCommit size={10} />
-                                            </div>
-                                            
-                                            {/* Content */}
-                                            <div className="flex flex-col">
+                        <div className="flex items-center justify-between">
+                            <h3 className="text-sm font-medium tracking-wider text-zinc-500">Milestones</h3>
+                        </div>
+                        
+                        {/* Milestone Item Structure - Repeated for each milestone */}
+                        <div className="flex flex-col gap-2">
+                            {milestones.length === 0 && (
+                                <p className="text-zinc-500 text-sm italic px-2">No milestones yet.</p>
+                            )}
+                            <div className="relative ml-2 border-l border-zinc-800 space-y-5 pb-2 pt-1">
+                                {milestones.map((ms: any, index: number) => (
+                                    <div key={ms.id} className="group relative pl-6">
+                                        {/* Timeline Node */}
+                                        <div className="absolute -left-[9px] top-0.5 bg-zinc-900 rounded-full border border-zinc-700 p-1 text-zinc-500 group-hover:border-amber-500 group-hover:text-amber-500 transition-colors shadow-sm">
+                                            <GitCommit size={10} />
+                                        </div>
+                                        
+                                        {/* Content */}
+                                        <div className="flex flex-col w-full gap-1">
+                                            <Activity mode={isEditMode ? "visible" : "hidden"}>
+                                                <input 
+                                                    type="text"
+                                                    value={ms.title}
+                                                    onChange={(e) => {
+                                                        const newMilestones = [...milestones];
+                                                        newMilestones[index] = { ...newMilestones[index], title: e.target.value };
+                                                        setMilestones(newMilestones);
+                                                    }}
+                                                    className="w-full bg-transparent border-0 border-b border-zinc-700 px-0 py-1 text-sm text-zinc-200 focus:outline-none focus:border-amber-500 focus:ring-0 transition-colors placeholder:text-zinc-600"
+                                                />
+                                            </Activity>
+                                            <Activity mode={!isEditMode ? "visible" : "hidden"}>
                                                 <p className="text-sm text-zinc-300 font-medium leading-tight group-hover:text-amber-400 transition-colors">
                                                     {ms.title}
                                                 </p>
-                                                <span className="text-[10px] text-zinc-600 font-mono mt-0.5">
-                                                    {new Date(ms.created_at).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
-                                                </span>
-                                            </div>
+                                            </Activity>
+                                            
+                                            <span className="text-[10px] text-zinc-600 font-mono">
+                                                {new Date(ms.created_at).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
+                                            </span>
                                         </div>
-                                    ))}
-                                </div>
+                                    </div>
+                                ))}
                             </div>
-                        </Activity>
+                        </div>
                     </div>
 
                     {/* Tags */}
@@ -311,8 +333,11 @@ export default function HustlePopup({isActive, hustle} : any) {
                                         Cancel
                                     </button>
                                     <button 
-                                        onClick={() => handleUpdateHustle()}
-                                        type="submit"
+                                        onClick={(e) => {
+                                            e.preventDefault()
+                                            handleUpdateHustle()
+                                        }}
+                                        type="button"
                                         className="cursor-pointer px-4 py-2 text-sm font-medium text-zinc-900 bg-amber-500 hover:bg-amber-400 rounded-xl transition-colors shadow-lg shadow-amber-500/20">
                                         Save
                                     </button>
