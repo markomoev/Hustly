@@ -17,13 +17,13 @@ return(
             <NewHustlePopup setShowPopup = {setShowPopup}/>
         </Activity>
 
-        <div className="flex flex-row justify-between items-center">
-            <h1 className="text-3xl text-white font-bold tracking-tight">
+        <div className="flex flex-row justify-between items-center gap-4">
+            <h1 className="text-2xl md:text-3xl text-white font-bold tracking-tight">
                 My Hustles
             </h1>
             <button 
                 onClick = {() => setShowPopup(true)}
-                className="cursor-pointer px-5 py-2.5 bg-amber-700 hover:bg-amber-600 text-white font-medium rounded-xl transition-colors duration-200 flex items-center gap-2 shadow-lg shadow-amber-900/20">
+                className="cursor-pointer px-4 py-2 md:px-5 md:py-2.5 bg-amber-700 hover:bg-amber-600 text-white text-sm md:text-base font-medium rounded-xl transition-colors duration-200 flex items-center gap-2 shadow-lg shadow-amber-900/20 whitespace-nowrap">
                 <Plus className = "w-4 h-4"/>
                 Add Hustle
             </button>

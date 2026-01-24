@@ -3,13 +3,13 @@ import ProfilePopupContent from './popup-sub-comp/ProfilePopupContent'
 
 export default function ProfilePopup(){
 return(
-    <div className='w-full h-screen flex flex-row gap-0 justify-center pt-15'>
+    <div className='w-full h-auto md:h-screen flex flex-col md:flex-row gap-0 justify-start md:justify-center pt-4 md:pt-15 px-4 md:px-0'>
         {/* menu for other sub pages */}
-        <div className='w-auto h-auto'>
+        <div className='w-full md:w-auto h-auto'>
             <ProfilePopupMenu/>
         </div>
         {/* main content */}
-        <div>
+        <div className="w-full md:w-auto">
             <ProfilePopupContent/>
         </div>
     </div>

@@ -25,20 +25,20 @@ export default function HomePage(){
                 
                 <main className="flex-1 flex flex-col items-center justify-center p-8 z-10 min-h-[90vh]">
                     <div className="max-w-2xl w-full space-y-8 text-center animate-in fade-in zoom-in duration-500">
-                        <div className="space-y-4">
-                            <h1 className="text-6xl md:text-8xl font-bold tracking-tighter text-transparent bg-clip-text bg-linear-to-br from-white to-zinc-500">
+                        <div className="space-y-4 px-4 sm:px-0">
+                            <h1 className="text-5xl sm:text-6xl md:text-8xl font-bold tracking-tighter text-transparent bg-clip-text bg-linear-to-br from-white to-zinc-500">
                                 <span className = 'text-amber-700'>H</span>
                                     ustly.
                             </h1>
-                            <p className="text-xl md:text-2xl text-zinc-400 font-light tracking-wide">
+                            <p className="text-lg sm:text-xl md:text-2xl text-zinc-400 font-light tracking-wide">
                                 Your personal workspace for getting things done.
                             </p>
                         </div>
 
-                        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-8">
+                        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-8 w-full sm:w-auto px-4">
                             <Link 
                                 to={isSignedIn ? "/my-hustles" : "/signup"} 
-                                className="group flex items-center gap-2 px-8 py-4 bg-zinc-100 text-black rounded-full font-medium transition-all hover:bg-white hover:scale-105"
+                                className="group flex items-center justify-center gap-2 px-8 py-4 bg-zinc-100 text-black rounded-full font-medium transition-all hover:bg-white hover:scale-105 w-full sm:w-auto"
                             >
                                 <Sparkles className="w-5 h-5" />
                                 <span>Get Started</span>
@@ -47,7 +47,7 @@ export default function HomePage(){
 
                             <Link 
                                 to="/signin" 
-                                className="group flex items-center gap-2 px-8 py-4 bg-zinc-900 border border-zinc-800 text-zinc-300 rounded-full font-medium transition-all hover:bg-zinc-800 hover:text-white"
+                                className="group flex items-center justify-center gap-2 px-8 py-4 bg-zinc-900 border border-zinc-800 text-zinc-300 rounded-full font-medium transition-all hover:bg-zinc-800 hover:text-white w-full sm:w-auto"
                             >
                                 <LogIn className="w-5 h-5" />
                                 <span>Sign In</span>

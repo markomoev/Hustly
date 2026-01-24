@@ -119,17 +119,17 @@ return(
         <Error message={errorMessage} />
     </div>
 )}
-    <div className="flex flex-col gap-8 p-8 bg-zinc-900/50 rounded-tr-lg rounded-br-lg rounded-bl-lg relative">
+    <div className="flex flex-col gap-6 md:gap-8 p-4 md:p-8 bg-zinc-900/50 rounded-b-lg md:rounded-b-none md:rounded-r-lg md:rounded-bl-lg relative w-full">
         { isLoading && (
             <div className="absolute inset-0 z-50 flex items-center justify-center bg-zinc-900/20 backdrop-blur-[1px] rounded-lg cursor-wait">
                 <Loader/>
             </div>
         )}
         {/* Profile Image and Basic Info */}
-        <div className="flex gap-6 items-center">
+        <div className="flex flex-col sm:flex-row gap-6 items-center sm:items-start text-center sm:text-left">
             <div
                 onClick = {handleImageClick} 
-                className={`w-32 h-32 rounded-full overflow-hidden `}>
+                className={`w-24 h-24 sm:w-32 sm:h-32 rounded-full overflow-hidden shrink-0`}>
                 
                 <input 
                     type="file"
@@ -146,7 +146,7 @@ return(
                 />
             </div>
             
-            <div className="flex flex-col gap-4 flex-1">
+            <div className="flex flex-col gap-4 flex-1 w-full">
                 <div className="flex flex-col gap-2">
                     <label className="text-white text-sm font-medium">Username</label>
                     <input

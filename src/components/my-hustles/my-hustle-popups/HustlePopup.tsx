@@ -91,11 +91,11 @@ export default function HustlePopup({isActive, hustle} : any) {
     
       
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
-            <div className="relative w-full max-w-2xl mx-4 bg-zinc-900 border border-zinc-800 rounded-2xl shadow-2xl">
+        <div className="fixed inset-0 z-50 flex items-end md:items-center justify-center bg-black/60 backdrop-blur-sm">
+            <div className="relative w-full h-[90vh] md:h-auto md:max-w-2xl mx-0 md:mx-4 bg-zinc-900 border-t md:border border-zinc-800 rounded-t-2xl md:rounded-2xl shadow-2xl flex flex-col">
                 
                 {/* Header */}
-                <div className="flex justify-between items-start px-8 py-6 border-b border-zinc-800">
+                <div className="flex justify-between items-start px-6 md:px-8 py-6 border-b border-zinc-800 bg-zinc-900 md:rounded-t-2xl sticky top-0 z-10">
                     <div className="flex flex-col gap-1 w-full mr-8">
                         <Activity mode={isEditMode ? "visible" : "hidden"}>
                             <input 
@@ -124,10 +124,10 @@ export default function HustlePopup({isActive, hustle} : any) {
                 </div>
 
                 {/* Content */}
-                <form className="px-8 py-6 max-h-[70vh] overflow-y-auto flex flex-col gap-8">
+                <form className="px-6 md:px-8 py-6 h-full overflow-y-auto flex flex-col gap-8 overscroll-contain pb-24 md:pb-6">
                     
                     {/* Status & Category Row */}
-                    <div className="flex gap-4">
+                    <div className="flex flex-col sm:flex-row gap-4">
                         <div className="flex items-center gap-2">
                             <span className="text-zinc-400 text-sm">Status:</span>
                             <Activity mode={isEditMode ? "visible" : "hidden"}>
@@ -146,7 +146,7 @@ export default function HustlePopup({isActive, hustle} : any) {
                                 </span>
                             </Activity>
                         </div>
-                        <div className="w-px h-6 bg-zinc-800"></div>
+                        <div className="hidden sm:block w-px h-6 bg-zinc-800"></div>
                         <div className="flex items-center gap-2">
                             <span className="text-zinc-400 text-sm">Category:</span>
                             <Activity mode={isEditMode ? "visible" : "hidden"}>
@@ -316,20 +316,20 @@ export default function HustlePopup({isActive, hustle} : any) {
                         </Activity>
                     </div>
                     {/* Footer / Actions */}
-                    <div className="pt-6 mt-2 border-t border-zinc-800 flex justify-end gap-3">
+                    <div className="pt-6 mt-auto border-t border-zinc-800 flex flex-col-reverse sm:flex-row justify-end gap-3 sticky bottom-0 bg-zinc-900 pb-0">
                         <Activity mode={isEditMode ? "visible" : "hidden"}>
-                            <div className="w-full flex items-center justify-between">
+                            <div className="w-full flex flex-col-reverse sm:flex-row items-center justify-between gap-3">
                                 <button 
                                     type="button"
                                     onClick = {() =>  handleDeleteHustle()}
-                                    className="cursor-pointer px-4 py-2 text-sm font-medium text-red-400 hover:text-red-300 hover:bg-red-400/10 rounded-xl transition-colors">
+                                    className="cursor-pointer w-full sm:w-auto px-4 py-3 sm:py-2 text-sm font-medium text-red-400 hover:text-red-300 hover:bg-red-400/10 rounded-xl transition-colors">
                                     Delete
                                 </button>
-                                <div className="flex items-center gap-3">
+                                <div className="flex flex-col-reverse sm:flex-row items-center gap-3 w-full sm:w-auto">
                                     <button 
                                         type="button"
                                         onClick={() => setIsEditMode(false)}
-                                        className="cursor-pointer px-4 py-2 text-sm font-medium text-zinc-400 hover:text-white hover:bg-zinc-800 rounded-xl transition-colors">
+                                        className="cursor-pointer w-full sm:w-auto px-4 py-3 sm:py-2 text-sm font-medium text-zinc-400 hover:text-white hover:bg-zinc-800 rounded-xl transition-colors">
                                         Cancel
                                     </button>
                                     <button 
@@ -338,7 +338,7 @@ export default function HustlePopup({isActive, hustle} : any) {
                                             handleUpdateHustle()
                                         }}
                                         type="button"
-                                        className="cursor-pointer px-4 py-2 text-sm font-medium text-zinc-900 bg-amber-500 hover:bg-amber-400 rounded-xl transition-colors shadow-lg shadow-amber-500/20">
+                                        className="cursor-pointer w-full sm:w-auto px-4 py-3 sm:py-2 text-sm font-medium text-zinc-900 bg-amber-500 hover:bg-amber-400 rounded-xl transition-colors shadow-lg shadow-amber-500/20">
                                         Save
                                     </button>
                                 </div>
@@ -346,20 +346,22 @@ export default function HustlePopup({isActive, hustle} : any) {
                         </Activity>
                         
                         <Activity mode={!isEditMode ? "visible" : "hidden"}>
-                            <button
-                                type = "button"
-                                onClick = {() => setAddMilestone(true)}
-                                className="cursor-pointer group flex items-center gap-2 px-4 py-2 text-sm font-medium text-zinc-900 bg-amber-600 hover:bg-amber-700 hover:text-black hover:border-zinc-600 rounded-xl transition-all duration-200">
-                                Add Milestone
-                            </button>
+                            <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+                                <button
+                                    type = "button"
+                                    onClick = {() => setAddMilestone(true)}
+                                    className="cursor-pointer group flex items-center justify-center gap-2 px-4 py-3 sm:py-2 text-sm font-medium text-zinc-900 bg-amber-600 hover:bg-amber-700 hover:text-black hover:border-zinc-600 rounded-xl transition-all duration-200 w-full sm:w-auto">
+                                    Add Milestone
+                                </button>
 
-                            <button
-                                type="button"
-                                onClick={() => setIsEditMode(true)} 
-                                className="cursor-pointer group flex items-center gap-2 px-4 py-2 text-sm font-medium text-zinc-400 bg-zinc-800/50 hover:bg-zinc-800 hover:text-white border border-zinc-700/50 hover:border-zinc-600 rounded-xl transition-all duration-200">
-                                <img src={editIcon} alt="Edit Icon" className=''/>
-                                Edit Details
-                            </button>
+                                <button
+                                    type="button"
+                                    onClick={() => setIsEditMode(true)} 
+                                    className="cursor-pointer group flex items-center justify-center gap-2 px-4 py-3 sm:py-2 text-sm font-medium text-zinc-400 bg-zinc-800/50 hover:bg-zinc-800 hover:text-white border border-zinc-700/50 hover:border-zinc-600 rounded-xl transition-all duration-200 w-full sm:w-auto">
+                                    <img src={editIcon} alt="Edit Icon" className=''/>
+                                    Edit Details
+                                </button>
+                            </div>
                         </Activity>
                     </div>
 

@@ -23,10 +23,10 @@ export default function NewHustlePopup({setShowPopup}: any) {
     }
     
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
-            <div className="relative w-full max-w-2xl mx-4 bg-zinc-900 border border-zinc-800 rounded-2xl shadow-2xl">
+        <div className="fixed inset-0 z-50 flex items-end md:items-center justify-center bg-black/60 backdrop-blur-sm">
+            <div className="relative w-full h-[90vh] md:h-auto md:max-w-2xl mx-0 md:mx-4 bg-zinc-900 border-t md:border border-zinc-800 rounded-t-2xl md:rounded-2xl shadow-2xl flex flex-col">
                 {/* Header */}
-                <div className="flex justify-between items-center px-8 py-6 border-b border-zinc-800">
+                <div className="flex justify-between items-center px-6 md:px-8 py-6 border-b border-zinc-800 bg-zinc-900 rounded-t-2xl sticky top-0 z-10 w-full">
                     <h2 className="text-2xl font-bold text-white">Create New Hustle</h2>
                     <button
                         onClick={() => setShowPopup(false)} 
@@ -40,9 +40,9 @@ export default function NewHustlePopup({setShowPopup}: any) {
                 {/* Form Content */}
                 <form 
                     onSubmit = {(e) => {e.preventDefault(); handleCreatingHustle()}}
-                    className="flex flex-col h-full">
+                    className="flex flex-col h-full overflow-hidden">
                     
-                    <div className="px-8 py-6 max-h-[70vh] overflow-y-auto flex flex-col gap-6">
+                    <div className="px-6 md:px-8 py-6 flex-1 overflow-y-auto flex flex-col gap-6 overscroll-contain">
                         {/* Hustle Title */}
                         <div className="flex flex-col gap-2">
                             <label className="text-white text-sm font-medium">Hustle Title *</label>
@@ -68,7 +68,7 @@ export default function NewHustlePopup({setShowPopup}: any) {
                         </div>
 
                         {/* Status and Category Row */}
-                        <div className="flex gap-4">
+                        <div className="flex flex-col sm:flex-row gap-4">
                             <div className="flex-1 flex flex-col gap-2">
                                 <label className="text-white text-sm font-medium">Status</label>
                                 <select 
@@ -106,7 +106,7 @@ export default function NewHustlePopup({setShowPopup}: any) {
                         </div>
 
                         {/* Visibility and Progress Row */}
-                        <div className="flex gap-4">
+                        <div className="flex flex-col sm:flex-row gap-4">
                             <div className="flex-1 flex flex-col gap-2">
                                 <label className="text-white text-sm font-medium">Visibility</label>
                                 <select 
@@ -135,17 +135,17 @@ export default function NewHustlePopup({setShowPopup}: any) {
                     </div>
 
                     {/* Footer */}
-                    <div className="flex justify-end gap-3 px-8 py-6 border-t border-zinc-800">
+                    <div className="flex flex-col-reverse sm:flex-row justify-end gap-3 px-6 md:px-8 py-6 border-t border-zinc-800 bg-zinc-900 md:rounded-b-2xl sticky bottom-0 z-10">
                         <button
                             onClick = {() => setShowPopup(false)}
                             type="button"
-                            className="px-6 py-2.5 bg-zinc-800 hover:bg-zinc-700 text-white font-medium rounded-xl border border-zinc-700 transition-colors duration-200"
+                            className="w-full sm:w-auto px-6 py-3 sm:py-2.5 bg-zinc-800 hover:bg-zinc-700 text-white font-medium rounded-xl border border-zinc-700 transition-colors duration-200"
                         >
                             Cancel
                         </button>
                         <button
                             type="submit"
-                            className="px-6 py-2.5 bg-amber-700 hover:bg-amber-600 text-white font-medium rounded-xl transition-colors duration-200 shadow-lg shadow-amber-900/20"
+                            className="w-full sm:w-auto px-6 py-3 sm:py-2.5 bg-amber-700 hover:bg-amber-600 text-white font-medium rounded-xl transition-colors duration-200 shadow-lg shadow-amber-900/20"
                         >
                             Create Hustle
                         </button>

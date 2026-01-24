@@ -5,15 +5,15 @@ import ProfilePopup from "../../components/profile/ProfilePopup"
 
 export default function ProfilePage(){
 return(
-    <div className = 'w-full h-screen flex flex-row overflow-hidden'> 
+    <div className = 'w-full h-screen flex flex-col-reverse md:flex-row overflow-hidden'> 
         <Sidebar/>
 
-        <div className = 'flex-1 h-auto flex flex-col'>
+        <div className = 'flex-1 h-full flex flex-col overflow-y-auto pb-20 md:pb-0'>
             <div>
                 <Topbar/>
             </div>
 
-            <div>
+            <div className="flex-1">
                 <ProfilePopup/>
             </div>
         </div>

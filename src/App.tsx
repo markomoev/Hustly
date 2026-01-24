@@ -6,6 +6,7 @@ import MyHustles from './pages/MyHustles'
 import ProgressPage from './pages/progress/Progress'
 
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
+import { Analytics } from "@vercel/analytics/react"
 
 function App() {
 return (
@@ -20,6 +21,7 @@ return (
         <Route path="/progress" element={<ProgressPage />} />
       </Routes>
     </div>
+    <Analytics />
   </Router>
 )
 }

@@ -11,7 +11,7 @@ export default function MyHustlesContent(){
 return(
     <>
         <SearchContext.Provider value = {{search, setSearch}}>
-            <div className = "w-full h-full py-10 px-8 flex flex-col gap-8">
+            <div className = "w-full h-full py-4 px-4 md:py-10 md:px-8 flex flex-col gap-6 md:gap-8">
                 <div>
                     <MyHustlesTopbar/>
                 </div>
