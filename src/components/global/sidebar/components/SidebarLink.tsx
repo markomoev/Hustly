@@ -1,8 +1,6 @@
 import {NavLink} from 'react-router-dom'
 
-import HomeIcon from '../icons/home.png'
-import ProgressIcon from '../icons/progress.png'
-import ProjectsIcon from '../icons/projects.png'
+import { House, FolderClosed, SquareActivity } from 'lucide-react';
 
 // retractable sidebar prop
 type SidebarState = {
@@ -13,12 +11,13 @@ type SidebarState = {
 export default function SidebarLink({isOpen}: SidebarState){
     // array for all links info
     const links = [
-        {to: '/', label: "Home", icon: HomeIcon},
-        {to: '/my-hustles', label: "My Hustles", icon: ProjectsIcon},
-        {to: '/progress', label: "Progress", icon: ProgressIcon},
+        {to: '/', label: "Home", icon: House},
+        {to: '/my-hustles', label: "My Hustles", icon: FolderClosed},
+        {to: '/progress', label: "Progress", icon: SquareActivity},
     ]
 
     const linksDisplay = links.map((l) => {
+        const Icon = l.icon;
         return (
             <NavLink
                 key={l.label}
@@ -30,8 +29,12 @@ export default function SidebarLink({isOpen}: SidebarState){
                     ${isActive ? 'border md:border-amber-700 shadow-lg md:bg-zinc-900 text-amber-500 md:text-white' : 'border-2 border-transparent md:hover:bg-zinc-800/30 text-zinc-400 md:text-white'}`
                 }
             >
-                <img src={l.icon} alt={l.label} className="w-6 h-6 shrink-0 transition-transform duration-300 md:group-hover:rotate-[-20deg] md:group-hover:scale-125" />
-                <span className={`${isOpen ? 'block opacity-100' : 'hidden opacity-0'} transition-opacity duration-300`}>{l.label}</span>
+                {typeof l.icon === 'string' ? (
+                    <img src={l.icon} alt={l.label} className="w-6 h-6 shrink-0 transition-transform duration-300 md:group-hover:rotate-[-20deg] md:group-hover:scale-125" />
+                ) : (
+                    <Icon className="w-6 h-6 shrink-0 transition-transform duration-300 md:group-hover:rotate-[-20deg] md:group-hover:scale-125" />
+                )}
+                <span className={`${isOpen ? 'block opacity-100' : 'hidden opacity-0'} transition-opacity duration-300 md:visible`}>{l.label}</span>
             </NavLink>
         );
     });

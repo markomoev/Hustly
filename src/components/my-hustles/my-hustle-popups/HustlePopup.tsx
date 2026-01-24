@@ -95,7 +95,7 @@ export default function HustlePopup({isActive, hustle} : any) {
             <div className="relative w-full h-[90vh] md:h-auto md:max-w-2xl mx-0 md:mx-4 bg-zinc-900 border-t md:border border-zinc-800 rounded-t-2xl md:rounded-2xl shadow-2xl flex flex-col">
                 
                 {/* Header */}
-                <div className="flex justify-between items-start px-6 md:px-8 py-6 border-b border-zinc-800 bg-zinc-900 md:rounded-t-2xl sticky top-0 z-10">
+                <div className="flex justify-between items-start px-6 md:px-8 py-5 border-b border-zinc-800 bg-zinc-900 md:rounded-t-2xl sticky -top-10 z-10">
                     <div className="flex flex-col gap-1 w-full mr-8">
                         <Activity mode={isEditMode ? "visible" : "hidden"}>
                             <input 
@@ -124,7 +124,7 @@ export default function HustlePopup({isActive, hustle} : any) {
                 </div>
 
                 {/* Content */}
-                <form className="px-6 md:px-8 py-6 h-full overflow-y-auto flex flex-col gap-8 overscroll-contain pb-24 md:pb-6">
+                <form className="px-6 md:px-8 py-6 h-full overflow-y-auto flex flex-col gap-8 overscroll-contain pb-0 md:pb-6">
                     
                     {/* Status & Category Row */}
                     <div className="flex flex-col sm:flex-row gap-4">
@@ -316,7 +316,7 @@ export default function HustlePopup({isActive, hustle} : any) {
                         </Activity>
                     </div>
                     {/* Footer / Actions */}
-                    <div className="pt-6 mt-auto border-t border-zinc-800 flex flex-col-reverse sm:flex-row justify-end gap-3 sticky bottom-0 bg-zinc-900 pb-0">
+                    <div className="pt-5 mt-auto border-t border-zinc-800 flex flex-col-reverse sm:flex-row justify-end gap-3 sticky bottom-0 bg-zinc-900 pb-10">
                         <Activity mode={isEditMode ? "visible" : "hidden"}>
                             <div className="w-full flex flex-col-reverse sm:flex-row items-center justify-between gap-3">
                                 <button 
