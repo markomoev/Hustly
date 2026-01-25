@@ -8,7 +8,7 @@ return(
     <div className = 'w-full h-screen flex flex-col-reverse md:flex-row overflow-hidden'> 
         <Sidebar/>
 
-        <div className = 'flex-1 h-full flex flex-col overflow-y-auto pb-20 md:pb-0'>
+        <div className = 'flex-1 h-full flex flex-col overflow-y-auto md:overflow-hidden pb-20 md:pb-0'>
             <div>
                 <Topbar/>
             </div>

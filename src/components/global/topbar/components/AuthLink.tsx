@@ -1,5 +1,6 @@
 import { useEffect, useEffectEvent, useState } from "react"
 import { NavLink } from "react-router-dom"
+import { LogIn, UserPlus } from "lucide-react"
 
 import {supabase} from '../../../../client'
 
@@ -60,26 +61,32 @@ return(
     :
     isLoggedIn ? 
     ( <div className = 'w-full flex flex-row items-center justify-end gap-3'> 
-            <ProfileDisplay
-                nickname = {nickname}/>
-            <ProfileAvatar />
+            <div className = 'mt-2'>
+                <ProfileDisplay
+                    nickname = {nickname}/>
+            </div>
+                <div className = "">            
+                    <ProfileAvatar />
+                </div>
         </div>
         )
     : 
-    ( <>
+    ( <div className="flex gap-3">
             <NavLink
                 to={'/signup'}
-                className="px-5 py-2 bg-zinc-900 text-zinc-300 rounded-full text-base font-medium transition-colors duration-200 hover:bg-zinc-700 focus:outline-none focus:ring-2 focus:ring-zinc-500"
+                className="group flex items-center gap-2 px-5 py-2 bg-transparent text-zinc-400 hover:text-white rounded-full text-sm font-medium transition-all duration-200"
             >
+                <UserPlus className="w-4 h-4 transition-transform group-hover:scale-110" />
                 Sign up
             </NavLink>
             <NavLink
                 to={'/signin'}
-                className="px-5 py-2 bg-zinc-900 border-2 border-amber-700 text-white rounded-full text-base font-medium transition-colors duration-200 hover:bg-zinc-800 hover:text-amber-700 focus:outline-none focus:ring-2 focus:ring-amber-500"
+                className="group flex items-center gap-2 px-5 py-2 bg-zinc-900 border border-zinc-800 text-zinc-300 rounded-full text-sm font-medium transition-all duration-200 hover:bg-amber-900/20 hover:text-amber-500 hover:border-amber-900/50 shadow-sm"
             >
+                <LogIn className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
                 Sign in
             </NavLink>
-        </> )
+        </div> )
     }
 </div>
 )

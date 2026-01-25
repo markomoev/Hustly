@@ -21,7 +21,7 @@ export default function HomePage(){
     return(
         <div className="flex h-screen w-full bg-[oklch(15.5%_0_0)] text-white overflow-hidden">
             
-            <div className="flex flex-col flex-1 w-full h-full overflow-y-auto relative scroll-smooth">
+            <div className="flex flex-col flex-1 w-full h-full overflow-y-auto overflow-x-hidden relative scroll-smooth">
                 
                 <main className="flex-1 flex flex-col items-center justify-center p-8 z-10 min-h-[90vh]">
                     <div className="max-w-2xl w-full space-y-8 text-center animate-in fade-in zoom-in duration-500">

@@ -1,6 +1,5 @@
 import { NavLink } from "react-router-dom"
-import UserIcon from './icons/user.png'
-import SettingsIcon from './icons/settings.png'
+import { User, Settings } from "lucide-react"
 
 type openStateProp = {
     setIsOpen: (value: boolean) => void;
@@ -12,23 +11,28 @@ return(
     <div 
         onMouseEnter={() => setIsOpen(true)}
         onMouseLeave={() => setIsOpen(false)}
-        className = 'md:w-50 h-auto px-5 py-2 bg-zinc-900/50 rounded-xl flex flex-col gap-2'>
+        className='w-56 p-2 bg-zinc-900 border border-zinc-800 rounded-2xl shadow-xl flex flex-col gap-1 backdrop-blur-sm'
+    >
         <NavLink
-        className = 'flex flex-row w-full px-1 py-1 gap-2'
-        to ={'/profile'}
-        
+            className={({isActive}) => `
+                flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200
+                ${isActive ? 'bg-zinc-800 text-white' : 'text-zinc-400 hover:text-white hover:bg-zinc-800'}
+            `}
+            to={'/profile'}
         >
-            <img src={UserIcon} alt="User Icon" className = 'mt-1 w-5 h-4' />
-            <span className = 'text-white w-full'>Profile</span>
+            <User className="w-4 h-4" />
+            <span className="text-sm font-medium">Profile</span>
         </NavLink>
 
         <NavLink
-        className = 'flex flex-row px-1 py-1 gap-2'
-        to = ""
-        
+            className={({isActive}) => `
+                flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200
+                ${isActive ? 'bg-zinc-800 text-white' : 'text-zinc-400 hover:text-white hover:bg-zinc-800'}
+            `}
+            to=""
         >
-            <img src={SettingsIcon} alt="User Icon" className = 'mt-1 w-5 h-4' />
-            <span className = 'text-white w-full'>Settings</span>
+            <Settings className="w-4 h-4" />
+            <span className="text-sm font-medium">Settings</span>
         </NavLink>
     </div>
 )

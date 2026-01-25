@@ -52,7 +52,7 @@ export function ChartRadialStacked() {
   }
 
   return (
-    <Card className="flex flex-col h-full bg-[oklch(16.5%_0_0)]">
+    <Card className="flex flex-col h-full bg-[oklch(16.5%_0_0)] pb-80 md:pb-0">
       <CardHeader className="items-center pb-0">
         <CardTitle>Hustle Statuses</CardTitle>
         <CardDescription>Status Distribution</CardDescription>

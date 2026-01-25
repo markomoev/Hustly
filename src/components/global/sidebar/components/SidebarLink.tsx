@@ -34,7 +34,7 @@ export default function SidebarLink({isOpen}: SidebarState){
                 ) : (
                     <Icon className="w-6 h-6 shrink-0 transition-transform duration-300 md:group-hover:rotate-[-20deg] md:group-hover:scale-125" />
                 )}
-                <span className={`${isOpen ? 'block opacity-100' : 'hidden opacity-0'} transition-opacity duration-300 md:visible`}>{l.label}</span>
+                <span className={`hidden ${isOpen ? 'md:block md:opacity-100' : 'md:hidden md:opacity-0'} transition-opacity duration-300`}>{l.label}</span>
             </NavLink>
         );
     });

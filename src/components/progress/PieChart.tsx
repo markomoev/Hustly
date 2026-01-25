@@ -105,7 +105,7 @@ export function ChartPieInteractive() {
   }
 
   return (
-    <Card data-chart={id} className="flex flex-col h-full bg-[oklch(16.5%_0_0)]">
+    <Card data-chart={id} className="flex flex-col h-full bg-[oklch(16.5%_0_0)] pb-80 md:pb-0">
       <ChartStyle id={id} config={chartConfig} />
       <CardHeader className="flex-row items-start space-y-0 pb-0">
         <div className="grid gap-1">

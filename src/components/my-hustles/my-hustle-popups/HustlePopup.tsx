@@ -95,7 +95,7 @@ export default function HustlePopup({isActive, hustle} : any) {
             <div className="relative w-full h-[90vh] md:h-auto md:max-w-2xl mx-0 md:mx-4 bg-zinc-900 border-t md:border border-zinc-800 rounded-t-2xl md:rounded-2xl shadow-2xl flex flex-col">
                 
                 {/* Header */}
-                <div className="flex justify-between items-start px-6 md:px-8 py-5 border-b border-zinc-800 bg-zinc-900 md:rounded-t-2xl sticky -top-10 z-10">
+                <div className="flex justify-between items-start px-6 md:px-8 py-5 border-b border-zinc-800 bg-zinc-900 md:rounded-t-2xl sticky top-0 z-10">
                     <div className="flex flex-col gap-1 w-full mr-8">
                         <Activity mode={isEditMode ? "visible" : "hidden"}>
                             <input 

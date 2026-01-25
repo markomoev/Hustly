@@ -44,7 +44,7 @@ export function ChartAreaInteractive() {
   const { data: chartData } = useProgressData(timeRange)
 
   return (
-    <Card className="pt-0 bg-[oklch(16.5%_0_0)] h-full flex flex-col justify-center">
+    <Card className="pt-0 bg-[oklch(16.5%_0_0)] h-full flex flex-col justify-center pb-5 md:pb-0">
       <CardHeader className="flex items-center gap-2 space-y-0 border-b-0 py-5 sm:flex-row">
         <div className="grid flex-1 gap-1">
           <CardTitle>Hustles growth</CardTitle>
